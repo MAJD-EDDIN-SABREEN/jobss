@@ -11,18 +11,20 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/directions.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jobss/UI/map.dart';
 import 'package:path/path.dart';
 
 import '../main.dart';
 
 class AddJob extends StatefulWidget {
   String sectionId;
-
-  AddJob(this.sectionId);
+  String lat;
+  String lang;
+  AddJob(this.sectionId,this.lat,this.lang);
 
   @override
   State<StatefulWidget> createState() {
-    return AddJobState(this.sectionId);
+    return AddJobState(this.sectionId,this.lat,this.lang);
   }
 }
 
@@ -33,26 +35,25 @@ class AddJobState extends State<AddJob> {
   var imagepicker = ImagePicker();
   var nameImage;
   var url;
-  String? lat;
-  String? lang;
+  String lat;
+  String lang;
+
+
+
   TextEditingController title = new TextEditingController();
   TextEditingController descrptuon = new TextEditingController();
   TextEditingController price = new TextEditingController();
   TextEditingController requirements = new TextEditingController();
   TextEditingController age = new TextEditingController();
   TextEditingController status = new TextEditingController();
-  var latlong;
   GlobalKey<FormState>formStateAddJob=new GlobalKey<FormState>();
-  String googleApikey = "AIzaSyA2dUyVmcBLkM8YqLeUorfg0biWVYM-k_U";
   GoogleMapController? mapController;
   CameraPosition? cameraPosition;
-  LatLng startLocation = LatLng(30.044420, 31.235712);
+  LatLng ?startLocation ;
   String location = "Search Location";
 
-  AddJobState(this.sectionId);
-  Set<Marker>myMarker={
-    Marker(markerId: MarkerId("1"),position:LatLng(30.044420, 31.235712) )
-  };
+  AddJobState(this.sectionId,this.lat, this.lang);
+  Set<Marker>?myMarker;
 
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController? gmc;
@@ -127,6 +128,14 @@ try{
     } else
       print("please select image");
   }
+  @override
+  void initState() {
+    startLocation = LatLng(double.parse(lat),double.parse(lang));
+    myMarker={
+      Marker(markerId: MarkerId("1"),position:LatLng(double.parse(lat),double.parse(lang)) )
+    };
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,8 +167,10 @@ try{
                 (file == null)
                     ? Container(
                   height: MediaQuery.of(context).size.height / 6,
+                  width: MediaQuery.of(context).size.width / 2,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
+                    color: Colors.grey
                   ),
                   child: IconButton(
                       onPressed: () {
@@ -201,7 +212,7 @@ try{
                               );
                             });
                       },
-                      icon: Icon(Icons.add)),
+                      icon: Icon(Icons.image)),
                 )
                     : InkWell(
                     child: Container(
@@ -377,106 +388,48 @@ try{
                             color: Colors.black87,fontSize: 10)),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 10),
-                  height: MediaQuery.of(context).size.height / 7,
-                  child: Stack(children: [
-                    GoogleMap(
-                      //Map widget from google_maps_flutter package
-                      zoomGesturesEnabled: true, //enable Zoom in, out on map
-                      initialCameraPosition: CameraPosition(
-                        //innital position in map
-                        target: startLocation, //initial position
-                        zoom: 14.0, //initial zoom level
-                      )
-                      ,
-                      markers: myMarker,
-                      mapType: MapType.normal,
-                      onTap: (latlang){
-                        setState(() {
-                          myMarker.remove(Marker(markerId: MarkerId("1")));
-                          myMarker.add( Marker(markerId: MarkerId("1"),position:latlang ));
-                          lat=latlang.latitude.toString();
-                          lang=latlang.longitude.toString();
-                        });
-                        print(latlang.latitude);
+                InkWell(
+                  child:
+                  Container(
+                    padding: EdgeInsets.only(top: 10),
+                    height: MediaQuery.of(context).size.height / 7,
+                    child: Stack(children: [
+                      GoogleMap(
+                        //Map widget from google_maps_flutter package
+                        zoomGesturesEnabled: true, //enable Zoom in, out on map
+                        initialCameraPosition: CameraPosition(
+                          //innital position in map
+                          target: startLocation!, //initial position
+                          zoom: 14.0, //initial zoom level
+                        )
+                        ,
+                        markers: myMarker!,
+                        mapType: MapType.normal,
+                        onTap: (latlang){
+                          setState(() {
+                            myMarker!.remove(Marker(markerId: MarkerId("1")));
+                            myMarker!.add( Marker(markerId: MarkerId("1"),position:latlang ));
+                            lat=latlang.latitude.toString();
+                            lang=latlang.longitude.toString();
+                          });
+                          print(latlang.latitude);
 
-                      },//map type
-                      onMapCreated: (controller) {
-                        //method called when map is created
-                        setState(() {
-                          mapController = controller;
-                        });
-                      },
-                    ),
+                        },//map type
+                        onMapCreated: (controller) {
+                          //method called when map is created
+                          setState(() {
+                            mapController = controller;
+                          });
+                        },
+                      ),
 
-                    //search autoconplete input
-                    // Positioned(
-                    //     //search input bar
-                    //     top: 10,
-                    //     child:
-                    //     InkWell(
-                    //         onTap: () async {
-                    //           var place = await PlacesAutocomplete.show(
-                    //               context: context,
-                    //               apiKey: googleApikey,
-                    //               mode: Mode.overlay,
-                    //               types: [],
-                    //               strictbounds: false,
-                    //               components: [Component(Component.country, 'np')],
-                    //               //google_map_webservice package
-                    //               onError: (err) {
-                    //                 print(err.predictions.toString());
-                    //               });
-                    //
-                    //           if (place != null) {
-                    //             setState(() {
-                    //               location = place.description.toString();
-                    //             });
-                    //
-                    //             //form google_maps_webservice package
-                    //             final plist = GoogleMapsPlaces(
-                    //               apiKey: googleApikey,
-                    //               apiHeaders: await GoogleApiHeaders().getHeaders(),
-                    //               //from google_api_headers package
-                    //             );
-                    //             String placeid = place.placeId ?? "0";
-                    //             final detail =
-                    //                 await plist.getDetailsByPlaceId(placeid);
-                    //             final geometry = detail.result.geometry!;
-                    //             final lat = geometry.location.lat;
-                    //             final lang = geometry.location.lng;
-                    //
-                    //             var newlatlang = LatLng(lat, lang);
-                    //             setState(() {
-                    //               lat1 = lat.toString();
-                    //               lang1 = lang.toString();
-                    //             });
-                    //
-                    //             //move map camera to selected place with animation
-                    //             mapController?.animateCamera(
-                    //                 CameraUpdate.newCameraPosition(CameraPosition(
-                    //                     target: newlatlang, zoom: 17)));
-                    //           }
-                    //         },
-                    //         child: Padding(
-                    //           padding: EdgeInsets.all(15),
-                    //           child: Card(
-                    //             child:
-                    //             Container(
-                    //                 padding: EdgeInsets.all(0),
-                    //                 width: MediaQuery.of(context).size.width - 40,
-                    //                 child: ListTile(
-                    //                   title: Text(
-                    //                     location,
-                    //                     style: TextStyle(fontSize: 18),
-                    //                   ),
-                    //                   trailing: Icon(Icons.search),
-                    //                   dense: true,
-                    //                 )),
-                    //           ),
-                    //         )))
-                  ]),
+
+                    ]),
+                  ),
+                  onLongPress: (){
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap(lat, lang,1,sectionId)));
+
+                  },
                 ),
 
                 //   child:  GoogleMap(
@@ -520,7 +473,7 @@ try{
                           url = await refStorage.getDownloadURL();
                         }
 
-                        latlong = await mapController?.getLatLng(ScreenCoordinate(x: 200, y: 200));
+
                         setState(() {
 
                         });

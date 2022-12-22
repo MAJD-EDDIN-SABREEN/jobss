@@ -30,7 +30,7 @@ class _LoginState extends State<Login> {
     await prefs.setString("role", role!);
   }
 
-  login() async {
+  login(BuildContext context) async {
     var formData=formStateLogin.currentState;
     if(formData!.validate()) {
       formData.save();
@@ -44,7 +44,12 @@ class _LoginState extends State<Login> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("id", id!);
       await prefs.setString('email', email.text);
-      setState(() {});
+      //setState(() {});
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Section(role)),
+              (Route<dynamic> route) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return showDialog(
@@ -64,18 +69,23 @@ class _LoginState extends State<Login> {
           },
         );
       } else if (e.code == 'wrong-password') {
-        AlertDialog(
-          content: Text("Wrong password provided for that user."),
-          actions: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Login()));
-                },
-                child: Text("Cancel"))
-          ],
+        print("ffhfhf");
+       return  showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("password not correct"),
+              actions: [
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Login()));
+                    },
+                    child: Text("Cancel"))
+              ],
+            );
+          },
         );
-        // print('Wrong password provided for that user.');
       }
     }}
   }
@@ -208,15 +218,11 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               setState(() {
                                 isLoading = true;
                               });
-                              await login();
+                              await login(context);
                               setState(() {
                                 isLoading = false;
                               });
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Section(role)),
-                                      (Route<dynamic> route) => false);
+
                             },
 
                             child: Text(
@@ -231,7 +237,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                         onTap: () {
                           Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => SignUp()),
+                              MaterialPageRoute(builder: (context) => SignUp("30.044420"," 31.235712")),
                                   (Route<dynamic> route) => false);
                         },
                       )

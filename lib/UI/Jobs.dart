@@ -295,6 +295,7 @@ return appnum;
                 //addApllicatonNumber(snapshots.data.docs[i].id);
                  return
                    Container(
+                     //width: MediaQuery.of(context).size.width/8,
                      padding: EdgeInsets.all(5),
                      decoration: BoxDecoration(
                        borderRadius: BorderRadius.circular(20),
@@ -314,7 +315,7 @@ return appnum;
                      child:
                      InkWell(child:
                      Padding(
-                       padding: const EdgeInsets.only(top: 15,left: 10),
+                       padding: const EdgeInsets.only(top: 15,left: 10,right: 10),
                        child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                          crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,16 +327,25 @@ return appnum;
                              width: MediaQuery.of(context).size.width
                              ,child:
                              Row(
-                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                           crossAxisAlignment: CrossAxisAlignment.center,
 
                            children: [
                              Padding(padding: EdgeInsets.only(top: 5)),
-                             Text("${snapshots.data.docs[i].data()["title"]}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18),),
-Padding(padding: EdgeInsets.only(left: 120)),
+                             Text("${snapshots.data.docs[i].data()["title"]}",style: TextStyle(color: Colors.black,overflow:TextOverflow.ellipsis ,fontWeight: FontWeight.bold,fontSize: 18),),
+                             //Padding(padding: EdgeInsets.only(left: 120)),
 
 
-                             Text("${snapshots.data.docs[i].data()["salary"]}",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.normal,fontSize: 16),)
-                             ,Text("  SAR",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.normal,fontSize: 16),),
+Spacer(),
+                                 Container(
+                               // width: MediaQuery.of(context).size.width,
+                                     alignment: Alignment.topRight,
+                                     child: Text("${snapshots.data.docs[i].data()["salary"]}",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.normal,fontSize: 16,overflow:TextOverflow.fade),)),
+
+
+
+
+                                 Text(" SAR",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.normal,fontSize: 16,overflow:TextOverflow.fade),),
                            ],
                          )),
                            Container(
@@ -366,7 +376,7 @@ Padding(padding: EdgeInsets.only(left: 120)),
                                ),
 
                                height: MediaQuery.of(context).size.height/6,
-                               width: MediaQuery.of(context).size.width,
+                              // width: MediaQuery.of(context).size.width,
                                child: GoogleMap(
                                //Map widget from google_maps_flutter package
                                zoomGesturesEnabled: true, //enable Zoom in, out on map
@@ -462,7 +472,7 @@ Padding(padding: EdgeInsets.only(left: 120)),
      floatingActionButton: FloatingActionButton(
          backgroundColor: Colors.black,
          onPressed: (){
-       Navigator.push(context,MaterialPageRoute(builder: (context)=>AddJob(sectionId)));
+       Navigator.push(context,MaterialPageRoute(builder: (context)=>AddJob(sectionId,"30.044420"," 31.235712")));
      },child: Icon(Icons.add)),
    ):
      Scaffold(
@@ -636,99 +646,124 @@ Padding(padding: EdgeInsets.only(left: 120)),
                    // documents.add(snapshots.data.docs[i].data());
                    // addApllicatonNumber(snapshots.data.docs[i].id);
                    return
-                     Card(
-                       elevation: 3,
-                       shape: RoundedRectangleBorder(
-                         borderRadius: BorderRadius.circular(80),
-                         //set border radius more than 50% of height and width to make circle
-                       ),
-                       child:
-                       Container(decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(100),
-                       ),
-                           child:
-                           InkWell(child:
-                           Column(
-                             mainAxisAlignment: MainAxisAlignment.start,
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
+                     Container(
+                       //width: MediaQuery.of(context).size.width/8,
+                         padding: EdgeInsets.all(5),
+                         decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(20),
+                         ),
+                         child: Card(
+                             shape: RoundedRectangleBorder(
+                               borderRadius: BorderRadius.circular(20),
+                               //set border radius more than 50% of height and width to make circle
+                             ),
 
-                               Padding(
-                                 padding: const EdgeInsets.only(top: 10),
-                                 child: SizedBox(
-                                     //height: MediaQuery.of(context).size.height/25
+                             margin: EdgeInsets.all(10),
+                             elevation: 20,
+
+                             //color: Colors.,
+
+
+                             child:
+                             InkWell(child:
+                             Padding(
+                               padding: const EdgeInsets.only(top: 15,left: 10,right: 10),
+                               child: Column(
+                                 mainAxisAlignment: MainAxisAlignment.start,
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+
+                                   SizedBox(
+                                     //height: MediaQuery.of(context).size.height/30
                                      //,
-                                     width: MediaQuery.of(context).size.width
-                                     ,child:
-                                     Row(
-                                       //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                       width: MediaQuery.of(context).size.width
+                                       ,child:
+                                   Row(
+                                     mainAxisAlignment: MainAxisAlignment.start,
+                                     crossAxisAlignment: CrossAxisAlignment.center,
 
-                                       children: [
-                                         Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width/8)),
-                                         Text("${snapshots.data.docs[i].data()["title"]}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18),),
-                                         Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width/14)),
-
-                                         Text("${snapshots.data.docs[i].data()["salary"]}",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.normal,fontSize: 16),)
-                                         ,Text("  SAR",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.normal,fontSize: 16),),
-                                       ],
-                                  )),
-                               ),
-                               // Container(
-                               //   padding: EdgeInsets.only(left: MediaQuery.of(context).size.width/8),
-                               //
-                               //   child: Text("applied number  :   "+"${snapshots.data.docs[i].data()["appnum"]}"
-                               //
-                               //     ,style: TextStyle(color: Colors.black,fontWeight: FontWeight.normal),),
-                               // ),
+                                     children: [
+                                       Padding(padding: EdgeInsets.only(top: 5)),
+                                       Text("${snapshots.data.docs[i].data()["title"]}",style: TextStyle(color: Colors.black,overflow:TextOverflow.ellipsis ,fontWeight: FontWeight.bold,fontSize: 18),),
+                                       //Padding(padding: EdgeInsets.only(left: 120)),
 
 
-                               Container(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width/8),child: Text("${snapshots.data.docs[i].data()["description"]}",style: TextStyle(color: Colors.black45,fontWeight: FontWeight.normal),)),
+                                       Spacer(),
+                                       Container(
+                                         // width: MediaQuery.of(context).size.width,
+                                           alignment: Alignment.topRight,
+                                           child: Text("${snapshots.data.docs[i].data()["salary"]}",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.normal,fontSize: 16,overflow:TextOverflow.fade),)),
 
 
 
 
+                                       Text(" SAR",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.normal,fontSize: 16,overflow:TextOverflow.fade),),
+                                     ],
+                                   )),
+                                   Container(
+                                     //padding: EdgeInsets.only(top: 10,left: MediaQuery.of(context).size.width/8)
+
+                                       child: Text("${snapshots.data.docs[i].data()["description"]}",style: TextStyle(color: Colors.black45,fontWeight: FontWeight.normal),)),
+
+                                   // Container(
+                                   //  // padding: EdgeInsets.only(left: MediaQuery.of(context).size.width/10),
+                                   //
+                                   //   child: Text("applied ("+"${snapshots.data.docs[i].data()["appnum"]}"+")"
+                                   //
+                                   //     ,style: TextStyle(color: Colors.black,fontWeight: FontWeight.normal),),
+                                   // ),
 
 
 
-                               InkWell(
-                                 child: Container(padding:EdgeInsets.only( top:10,bottom: 10,left: 40,right:40 ),
 
-                                   height: MediaQuery.of(context).size.height/6,
-                                   width: MediaQuery.of(context).size.width,
-                                   child: GoogleMap(
-                                     //Map widget from google_maps_flutter package
-                                     zoomGesturesEnabled: true, //enable Zoom in, out on map
-                                     initialCameraPosition: CameraPosition(
-                                       //innital position in map
-                                       target: LatLng(double.parse("${snapshots.data.docs[i].data()["lat"]}"), double.parse("${snapshots.data.docs[i].data()["lang"]}")), //initial position
-                                       zoom: 14.0,
-                                       //initial zoom level
-                                     )
-                                     ,
-                                     markers:<Marker>{
-                                       Marker(markerId: MarkerId("1"),position: LatLng(double.parse("${snapshots.data.docs[i].data()["lat"]}"), double.parse("${snapshots.data.docs[i].data()["lang"]}"),), //initial position
-                                           infoWindow: InfoWindow(
-                                               title: "${snapshots.data.docs[i].data()["title"]}"
-                                           )
+
+
+
+
+
+                                   InkWell(
+                                     child: Container(
+                                       padding:EdgeInsets.only( top:10,bottom: 10
+                                           ,left: 5,right:5
                                        ),
 
-                                     }
+                                       height: MediaQuery.of(context).size.height/6,
+                                       // width: MediaQuery.of(context).size.width,
+                                       child: GoogleMap(
+                                         //Map widget from google_maps_flutter package
+                                         zoomGesturesEnabled: true, //enable Zoom in, out on map
+                                         initialCameraPosition: CameraPosition(
+                                           //innital position in map
+                                           target: LatLng(double.parse("${snapshots.data.docs[i].data()["lat"]}"), double.parse("${snapshots.data.docs[i].data()["lang"]}")), //initial position
+                                           zoom: 14.0,
+                                           //initial zoom level
+                                         )
+                                         ,
+                                         markers:<Marker>{
+                                           Marker(markerId: MarkerId("1"),position: LatLng(double.parse("${snapshots.data.docs[i].data()["lat"]}"), double.parse("${snapshots.data.docs[i].data()["lang"]}"),), //initial position
+                                               infoWindow: InfoWindow(
+                                                   title: "${snapshots.data.docs[i].data()["title"]}"
+                                               )
+                                           ),
 
-                                     ,
-                                     mapType: MapType.normal,
-                                     onMapCreated: (controller) {
-                                       //method called when map is created
-                                       setState(() {
-                                         mapController = controller;
-                                       });
-                                     },
+                                         }
 
-                                   ) ,),
-                               ),
+                                         ,
+                                         mapType: MapType.normal,
+                                         onMapCreated: (controller) {
+                                           //method called when map is created
+                                           setState(() {
+                                             mapController = controller;
+                                           });
+                                         },
+
+                                       ) ,),
+                                   ),
 
 
 
-                             ],),
+                                 ],),
+                             ),
                      onTap:  (){
                        showDialog(context: context, builder: (
                            BuildContext context) {

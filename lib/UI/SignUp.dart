@@ -5,28 +5,35 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobss/UI/map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jobss/UI/Log_In.dart';
 import '../main.dart';
 import 'Sections.dart';
 
 class SignUp extends StatefulWidget{
+  String  lat;
+  String lang;
+
+  SignUp(this.lat, this.lang);
+
   @override
   State<StatefulWidget> createState() {
-return SignUpState();
+return SignUpState(this.lat, this.lang);
   }
 
 }class SignUpState extends State<SignUp>{
   bool isLoading = false;
   String? gender="male";
   String? role="manger";
-  LatLng startLocation = LatLng(30.044420, 31.235712);
-  String? lat;
-  String? lang;
+  LatLng ?startLocation ;
+  String  lat;
+  String lang;
+
+  SignUpState(this.lat, this.lang);
+
   GoogleMapController? mapController;
-  Set<Marker>myMarker={
-    Marker(markerId: MarkerId("1"),position:LatLng(30.044420, 31.235712) )
-  };
+  Set<Marker>?myMarker;
   TextEditingController name=new TextEditingController();
   TextEditingController password=new TextEditingController();
   TextEditingController email=new TextEditingController();
@@ -56,7 +63,7 @@ return SignUpState();
       "lang":lang
     });
   }
-  signUp() async {
+  signUp(BuildContext context) async {
     var formData=formStateSignUp.currentState;
     if(formData!.validate()) {
       formData.save();
@@ -74,6 +81,7 @@ return SignUpState();
         createUser(id!);
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString("id", id);
+        await prefs.setString('email', email.text);
         Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>Section(role.toString())),(Route<dynamic> route) => false);
 
       } on FirebaseAuthException catch (e) {
@@ -84,7 +92,7 @@ return SignUpState();
               return AlertDialog(
                 content: Text("The password provided is too weak."),
                 actions: [
-                  ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>SignUp()));}, child:Text("Cancel") )],
+                  ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>SignUp(lat,lang)));}, child:Text("Cancel") )],
               );
             },
           );
@@ -96,7 +104,7 @@ return SignUpState();
               return AlertDialog(
                 content: Text("The account already exists for that email."),
                 actions: [
-                  ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>SignUp()));}, child:Text("Cancel") )],
+                  ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>SignUp(lat,lang)));}, child:Text("Cancel") )],
               );
             },
           );
@@ -108,7 +116,14 @@ return SignUpState();
     }
 
   }
-
+   @override
+  void initState() {
+     startLocation = LatLng(double.parse(lat),double.parse(lang));
+     myMarker={
+       Marker(markerId: MarkerId("1"),position:LatLng(double.parse(lat),double.parse(lang)) )
+     };
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
    return Scaffold(
@@ -233,74 +248,86 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       CupertinoRadioChoice(
                           choices: {'male' : 'Male', 'female' : 'Female', 'other': 'Other'},
                           onChange: (selectedGender) {gender=selectedGender;},
+                          selectedColor: Colors.black,
                           initialKeyValue: 'male'),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       Text("Role",style: TextStyle(fontWeight: FontWeight.bold)),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       CupertinoRadioChoice(
+                          selectedColor: Colors.black,
                           choices: {'manger' : 'manger', 'employee' : 'Employee' },
                           onChange: (selected) {role = selected;},
                           initialKeyValue: 'male'),
                       Card(child:
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        height: MediaQuery.of(context).size.height / 4,
-                        child: Stack(children: [
-                          GoogleMap(
-                            //Map widget from google_maps_flutter package
-                            zoomGesturesEnabled: true, //enable Zoom in, out on map
-                            initialCameraPosition: CameraPosition(
-                              //innital position in map
-                              target: startLocation, //initial position
-                              zoom: 14.0, //initial zoom level
-                            )
-                            ,
-                            markers: myMarker,
-                            mapType: MapType.normal,
-                            onTap: (latlang){
-                              setState(() {
-                                myMarker.remove(Marker(markerId: MarkerId("1")));
-                                myMarker.add( Marker(markerId: MarkerId("1"),position:latlang ));
-                                lat=latlang.latitude.toString();
-                                lang=latlang.longitude.toString();
-                              });
-                              print(latlang.latitude);
+                      InkWell(
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          height: MediaQuery.of(context).size.height / 4,
+                          child: Stack(children: [
+                            GoogleMap(
 
-                            },//map type
-                            onMapCreated: (controller) {
-                              //method called when map is created
-                              setState(() {
-                                mapController = controller;
-                              });
-                            },
-                          ),
+                              //Map widget from google_maps_flutter package
+                              zoomGesturesEnabled: true, //enable Zoom in, out on map
+                              initialCameraPosition: CameraPosition(
+                                //innital position in map
+                                target: startLocation!, //initial position
+                                zoom: 14.0, //initial zoom level
+                              )
+                              ,
+                              markers: myMarker!,
+                              mapType: MapType.normal,
+                              onTap: (latlang){
+                                setState(() {
+                                  myMarker!.remove(Marker(markerId: MarkerId("1")));
+                                  myMarker!.add( Marker(markerId: MarkerId("1"),position:latlang ));
+                                  lat=latlang.latitude.toString();
+                                  lang=latlang.longitude.toString();
+                                });
+                                print(latlang.latitude);
 
-                        ]),
+                              },//map type
+                              onMapCreated: (controller) {
+                                //method called when map is created
+                                setState(() {
+                                  mapController = controller;
+                                });
+                              },
+                            ),
+
+                          ]),
+                        ),
+                        onLongPress: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap(lat, lang,0,"")));
+                        },
                       ), elevation: 5,color: Colors.white),
                       Padding(padding: EdgeInsets.only(top:MediaQuery.of(context).size.height/20)),
                       (isLoading==false) ?
-                      ElevatedButton(
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/1.5,
 
-                          onPressed: ()async{
-                            setState((){
-                              isLoading=true;
-                            });
-                            await signUp();
-                            setState((){
-                              isLoading=false;
-                            });
-                               },
-                          style:ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(CustomColors.button),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(18.0), // radius you want
-                                    side: BorderSide(
-                                      color: Colors.transparent, //color
-                                    ),
-                                  ))),
-                          child: Text("Sign Up",style: TextStyle(fontSize: 30),)): Center(child:CircularProgressIndicator())
+                        child: ElevatedButton(
+
+                            onPressed: ()async{
+                              setState((){
+                                isLoading=true;
+                              });
+                              await signUp(context);
+                              setState((){
+                                isLoading=false;
+                              });
+                                 },
+                            style:ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(CustomColors.button),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(18.0), // radius you want
+                                      side: BorderSide(
+                                        color: Colors.transparent, //color
+                                      ),
+                                    ))),
+                            child: Text("Sign Up",style: TextStyle(fontSize: 30),)),
+                      ): Center(child:CircularProgressIndicator())
               ,Padding(padding: EdgeInsets.only(top:MediaQuery.of(context).size.height/30)),
                        InkWell(child: Text("I have an account"),
                           onTap:(){Navigator.pushAndRemoveUntil(

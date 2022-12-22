@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobss/UI/onBordingPages.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,10 +30,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     getEmail();
     Future.delayed(Duration(seconds: 5), () {
+
       (email == null)
-          ? Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Login()))
-          : Navigator.push(
+          ?
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => OnBordingPages()))
+          :
+      Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => Section(role.toString())));
@@ -43,28 +49,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-              padding:
-              EdgeInsets.only(top: MediaQuery.of(context).size.height / 5)),
-          Center(
-            child: Container(
-              height: MediaQuery.of(context).size.height / 1.5,
-              width: MediaQuery.of(context).size.width,
-              child: Lottie.asset("images/splachScreen.json"),
+      body: Container(
+        color: Colors.black,
+        child: Column(
+          children: [
+            Padding(
+                padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 5)),
+            Center(
+              child: Container(
+                height: MediaQuery.of(context).size.height / 1.5,
+                width: MediaQuery.of(context).size.width,
+                child: Lottie.asset("images/splachScreen.json"),
+              ),
             ),
-          ),
-          Padding(
-              padding:
-                  EdgeInsets.only(top:10)),
-          Center(
-            child: Text(
-              "Jobs",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,color: Colors.grey),
+            Padding(
+                padding:
+                    EdgeInsets.only(top:10)),
+            Center(
+              child: Text(
+                "Jobs",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

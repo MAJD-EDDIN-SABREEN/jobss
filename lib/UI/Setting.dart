@@ -110,22 +110,15 @@ class _SettingState extends State<Setting> {
                             width: MediaQuery.of(context).size.width / 2,
                             child: Container(
 
-//height: MediaQuery.of(context).size.height,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
 
-                                //borderRadius: BorderRadius.circular(100)
-                                //  ,
                                 image: DecorationImage(
 
                                     fit: BoxFit.fill, image:AssetImage("images/job.jpg")),
 
                               ),
-                              // child: Icon(
-                              //   color: Colors.white,
-                              //   Icons.person,
-                              //   size: MediaQuery.of(context).size.width / 4,
-                              // ),
+
                             ),
 
 
@@ -140,10 +133,6 @@ class _SettingState extends State<Setting> {
                                 children: [
 
                                   Center(child: Text("${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
-
-
-
-
                                   Card(
                                       margin: EdgeInsets.all(5),
                                       shape: RoundedRectangleBorder(

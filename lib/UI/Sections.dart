@@ -31,6 +31,7 @@ class SectionState extends State<Section> {
   String role;
   SectionState(this.role);
   int _selectedIndex = 0;
+  bool isLoding=true;
   void _onItemTapped(int index) {
     if(index==0){
 
@@ -79,9 +80,8 @@ signOut() async {
       email = await prefs.getString('email');
       var userPref = FirebaseFirestore.instance.collection("Users");
       var query = await userPref.where("email", isEqualTo: email).get();
-      //image = query.docs[0]["image"];
       name = query.docs[0]["name"];
-      print("hiiiii");
+
     }
   catch(e){
     print("hiiiii");
@@ -95,6 +95,9 @@ signOut() async {
 
   getDetail() async {
     await getEmail();
+    setState(() {
+      isLoding=false;
+    });
 
 
 
@@ -102,7 +105,9 @@ signOut() async {
 
 @override
   void initState() {
-  getDetail();
+  WidgetsBinding.instance.addPostFrameCallback((_){
+    getDetail();
+  });
     super.initState();
   }
 
@@ -110,10 +115,18 @@ signOut() async {
   Widget build(BuildContext context) {
 
     return
+      (isLoding==true)?
+       Scaffold(
+        appBar:AppBar(backgroundColor: Colors.black,
+            title: Text("Section"),
+            centerTitle: true,
+            ),
+        // resizeToAvoidBottomInset: false,
+        body: Center(child: CircularProgressIndicator(),),
+      ):
       (role=="manger")?
       Scaffold(
         drawer: Drawer(
-
           child:
           Container(
             width:MediaQuery.of(context).size.width/2,
@@ -148,12 +161,10 @@ signOut() async {
                               width: MediaQuery.of(context).size.width / 2,
                                       child: Container(
 
-//height: MediaQuery.of(context).size.height,
+
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
 
-                                          //borderRadius: BorderRadius.circular(100)
-                                  //  ,
                                             image: DecorationImage(
 
                                             fit: BoxFit.fill, image:AssetImage("images/job.jpg")),
@@ -170,27 +181,24 @@ signOut() async {
 Padding(padding: EdgeInsets.only(top: 10)),
 
   Center(
-    child: Row(
+    child:
+    Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
 
-      Center(child: Text("${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
-
-
-
-
-      Card(
-          margin: EdgeInsets.all(5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-            //set border radius more than 50% of height and width to make circle
-          ),
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("${role!}",style: TextStyle(color: Colors.black,fontSize: 15),),
-          ))
-    ]),
+          Center(child: Text("${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
+          Card(
+              margin: EdgeInsets.all(5),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+                //set border radius more than 50% of height and width to make circle
+              ),
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("${role!}",style: TextStyle(color: Colors.black,fontSize: 8),),
+              ))
+        ]),
   ),
 
                           Padding(padding: EdgeInsets.only(top: 10))
@@ -227,7 +235,8 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               ),
                               onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => MyApplication()));
+              MaterialPageRoute(builder: (context) =>
+              Section(role)));
         } ,
                             )
 
@@ -322,59 +331,72 @@ Padding(padding: EdgeInsets.only(top: 10)),
                 return Text("erorr");
               }
               if(snapshots.hasData){
-                return ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    SizedBox(height: 15.0),
+                return
+
+
+
+                    //SizedBox(height: 15.0),
                     Container(
+                      padding: EdgeInsets.only(top: 5),
                         color: Colors.white,
                         width: MediaQuery.of(context).size.width,
+                        //height: MediaQuery.of(context).size.height,
                         child: GridView.builder(
+                          //childAspectRatio: (1 / .4),
+                          //shrinkWrap: true,
+                         // scrollDirection: Axis.vertical,
                           gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                           SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            //childAspectRatio: 3 / 2,
+
+                            //mainAxisSpacing: 50
+                            childAspectRatio: 1 /MediaQuery.of(context).size.height/4,
                           ),
                           itemCount: snapshots.data.docs!.length,
                           itemBuilder: (BuildContext context, int postion) {
                             return  Container(
+                               // height: MediaQuery.of(context).size.height/2,
                               decoration: BoxDecoration(
+
                                 borderRadius: BorderRadius.circular(20)
                               ),
-                                height: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height / 2,
+
                                 padding: EdgeInsets.only(top: 6, bottom: 2.0, left: 5.0, right: 5.0),
                                 child: InkWell(
-                                  child: Column(children: [
-                                    //Padding(padding: EdgeInsets.only(top: 10)),
-                                    Container(
-                                      height: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height / 5,
+                                  child: Container(
+                                      //height: MediaQuery.of(context).size.height,
+                                    child: Column(children: [
+                                      //Padding(padding: EdgeInsets.only(top: 10)),
 
-                                      //margin: EdgeInsets.only(top: 50),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(30),
-                                          image: DecorationImage(
-                                              image: NetworkImage("${snapshots.data.docs[postion].data()["image"]}"), fit: BoxFit.fill)),
-                                    ),
-                                    Container(
-                                      //color: Colors.grey,
-                                      child: Center(
-                                        child: Text(
-                                          "${snapshots.data.docs[postion].data()["name"]}" ,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20,
-                                              //fontWeight: FontWeight.bold
+
+                                        Container(
+
+                                          height: MediaQuery.of(context).size.height/6,
+
+                                          //margin: EdgeInsets.only(top: 50),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(30),
+                                              image: DecorationImage(
+                                                  image: NetworkImage("${snapshots.data.docs[postion].data()["image"]}"), fit: BoxFit.fill)),
+                                        ),
+
+                                       Container(
+                                           // height: MediaQuery.of(context).size.height/10,
+                                          //color: Colors.grey,
+                                          child: Center(
+                                            child: Text(
+                                              "${snapshots.data.docs[postion].data()["name"]}" ,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 19,
+                                                  //fontWeight: FontWeight.bold
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ]),
+
+                                    ]),
+                                  ),
                                   onTap: () {
                                     showDialog(context: context, builder: (
                                         BuildContext context) {
@@ -419,16 +441,13 @@ Padding(padding: EdgeInsets.only(top: 10)),
 
                                   },
                                 ));
-                            // return _buildCard(
-                            // snapshots.data.docs[postion].data()["title"],
-                            //  " ${snapshots.data.docs[postion].data()["image"]}",
-                            // context);
+
 
                           },
-                        )),
-                    SizedBox(height: 15.0)
-                  ],
-                );
+                        ));
+
+
+
 
               }
 
@@ -446,7 +465,6 @@ Padding(padding: EdgeInsets.only(top: 10)),
       ):
       Scaffold(
           drawer: Drawer(
-
             child:
             Container(
               width:MediaQuery.of(context).size.width/2,
@@ -481,21 +499,16 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               width: MediaQuery.of(context).size.width / 2,
                               child: Container(
 
-//height: MediaQuery.of(context).size.height,
+
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
 
-                                  //borderRadius: BorderRadius.circular(100)
-                                  //  ,
                                   image: DecorationImage(
 
                                       fit: BoxFit.fill, image:AssetImage("images/job.jpg")),
 
                                 ),
-                                // child: Icon(
-                                //   color: Colors.white,
-                                //   Icons.person,
-                                //   size: MediaQuery.of(context).size.width / 4,
+
                                 // ),
                               ),
 
@@ -506,15 +519,12 @@ Padding(padding: EdgeInsets.only(top: 10)),
                             Padding(padding: EdgeInsets.only(top: 10)),
 
                             Center(
-                              child: Row(
+                              child:
+                              Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
 
                                     Center(child: Text("${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
-
-
-
-
                                     Card(
                                         margin: EdgeInsets.all(5),
                                         shape: RoundedRectangleBorder(
@@ -524,13 +534,11 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                         elevation: 5,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text("${role!}",style: TextStyle(color: Colors.black,fontSize: 15),),
+                                          child: Text("${role!}",style: TextStyle(color: Colors.black,fontSize: 8),),
                                         ))
                                   ]),
                             ),
-                            // Center(child: Text("        ${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
-                            // Padding(padding: EdgeInsets.only(top: 10)),
-                            // Center(child: Text("        ${role!}",style: TextStyle(color: Colors.white),)),
+
                             Padding(padding: EdgeInsets.only(top: 10))
                             ,Center(child: Text("${email!}",style: TextStyle(color: Colors.white,fontSize: 10),)),
 
@@ -565,17 +573,10 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                 ),
                                 onTap: () {
                                   Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => MyApplication()));
+                                      MaterialPageRoute(builder: (context) => Section(role)));
                                 } ,
                               )
-                            // ElevatedButton(
-                            //     style: ElevatedButton.styleFrom(
-                            //       backgroundColor:Colors.black ,
-                            //     ),
-                            //     onPressed: () {
-                            //       Navigator.push(context,
-                            //           MaterialPageRoute(builder: (context) => MyApplication()));
-                            //     }, child: Text("Section")),
+
                           ),
                         ]),
                       ),
@@ -643,22 +644,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                     prefs.remove('theme');
                                   }
                               )),
-                          // Padding(padding: EdgeInsets.only(right: 20)),
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width / 1.8,
-                          //   child: ElevatedButton(
-                          //       style: ElevatedButton.styleFrom(
-                          //         backgroundColor:Colors.black ,
-                          //       ),
-                          //       onPressed: () async {
-                          //         signOut();
-                          //         SharedPreferences prefs = await SharedPreferences.getInstance();
-                          //         prefs.remove('email');
-                          //         prefs.remove('id');
-                          //         prefs.remove('theme');
-                          //       },
-                          //       child: Text("Logout")),
-                          // ),
+
                         ]),
                       ),
                     ],
@@ -666,6 +652,8 @@ Padding(padding: EdgeInsets.only(top: 10)),
             ),
           ),
         appBar: AppBar(backgroundColor: Colors.black,
+title: Text("Section"),
+            centerTitle: true,
 
             actions: [
 
@@ -680,36 +668,43 @@ Padding(padding: EdgeInsets.only(top: 10)),
                 return Text("erorr");
               }
               if(snapshots.hasData){
-                return ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    SizedBox(height: 15.0),
-                    Container(
-                        color: Colors.white,
-                        width: MediaQuery.of(context).size.width,
-                        child: GridView.builder(
-                          gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            //childAspectRatio: 3 / 2,
-                          ),
-                          itemCount: snapshots.data.docs!.length,
-                          itemBuilder: (BuildContext context, int postion) {
-                            return
-                              Container(
-                                height: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height / 4,
-                                padding: EdgeInsets.only(top: 2.0, bottom: 2.0, left: 5.0, right: 5.0),
-                                child: InkWell(
+                return
+                  Container(
+                      padding: EdgeInsets.only(top: 5),
+                      color: Colors.white,
+                      width: MediaQuery.of(context).size.width,
+                      //height: MediaQuery.of(context).size.height,
+                      child: GridView.builder(
+                        //childAspectRatio: (1 / .4),
+                        //shrinkWrap: true,
+                        // scrollDirection: Axis.vertical,
+                        gridDelegate:
+                        SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+
+                          //mainAxisSpacing: 50
+                          childAspectRatio: 1 /MediaQuery.of(context).size.height/4,
+                        ),
+                        itemCount: snapshots.data.docs!.length,
+                        itemBuilder: (BuildContext context, int postion) {
+                          return  Container(
+                            // height: MediaQuery.of(context).size.height/2,
+                              decoration: BoxDecoration(
+
+                                  borderRadius: BorderRadius.circular(20)
+                              ),
+
+                              padding: EdgeInsets.only(top: 6, bottom: 2.0, left: 5.0, right: 5.0),
+                              child: InkWell(
+                                child: Container(
+                                  //height: MediaQuery.of(context).size.height,
                                   child: Column(children: [
                                     //Padding(padding: EdgeInsets.only(top: 10)),
+
+
                                     Container(
-                                      height: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height / 5,
+
+                                      height: MediaQuery.of(context).size.height/6,
 
                                       //margin: EdgeInsets.only(top: 50),
                                       decoration: BoxDecoration(
@@ -717,20 +712,24 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                           image: DecorationImage(
                                               image: NetworkImage("${snapshots.data.docs[postion].data()["image"]}"), fit: BoxFit.fill)),
                                     ),
+
                                     Container(
+                                      // height: MediaQuery.of(context).size.height/10,
                                       //color: Colors.grey,
                                       child: Center(
                                         child: Text(
                                           "${snapshots.data.docs[postion].data()["name"]}" ,
                                           style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 20,
+                                            fontSize: 19,
                                             //fontWeight: FontWeight.bold
                                           ),
                                         ),
                                       ),
                                     ),
+
                                   ]),
+                                ),
                                   onTap: () {
                                     showDialog(context: context, builder: (
 
@@ -767,10 +766,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
 
 
                           },
-                        )),
-                    SizedBox(height: 15.0)
-                  ],
-                );
+                        ));
 
               }
 
