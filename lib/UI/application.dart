@@ -129,167 +129,171 @@ class _ApplicationState extends State<Application>  {
       backgroundColor: Colors.black,
       centerTitle: true),
       body: 
-      Container(
-height: MediaQuery.of(context).size.height/2,
-       // padding: EdgeInsets.all(10),
-        child:
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-            //set border radius more than 50% of height and width to make circle
-          ),
-          elevation: 10,
-          margin: EdgeInsets.all(15),
-          child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-Padding(padding: EdgeInsets.only(top: 10)),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: expactSalary,
-                    textCapitalization: TextCapitalization.words,
+      SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+height: MediaQuery.of(context).size.height/1.5,
+         // padding: EdgeInsets.all(10),
+          child:
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+              //set border radius more than 50% of height and width to make circle
+            ),
+            elevation: 10,
+            margin: EdgeInsets.all(15),
+            child: Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+Padding(padding: EdgeInsets.only(top: 5)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: expactSalary,
+                      textCapitalization: TextCapitalization.words,
 
 keyboardType: TextInputType.number,
-                    decoration:  InputDecoration(
+                      decoration:  InputDecoration(
 
-                        border:OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20))
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelText:'Expected Salary'.tr(),
+                          border:OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText:'Expected Salary'.tr(),
 
-                        labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                          labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                      ),
+                    ),
+                  ) ,
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: notes,
+                      textCapitalization: TextCapitalization.words,
+
+
+                      decoration:  InputDecoration(
+                          border:OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText:'notes'.tr(),
+
+                          labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                      ),
+                    ),
+                  ) ,
+                  InkWell(child:
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      readOnly: true,
+                      controller: date,
+                      onTap: (){ _selectedDate(context);},
+                      textCapitalization: TextCapitalization.words,
+                      decoration:  InputDecoration(
+                          border:OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText:'date'.tr(),
+
+
+                          labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                      ),
                     ),
                   ),
-                ) ,
+                  onTap:(){ _selectedDate(context);} ) ,
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Icon(
+                  //       Icons.date_range,
+                  //       size: 20,
+                  //       color: Colors.black54,
+                  //     ),
+                  //     Text(
+                  //         "date",
+                  //         style: TextStyle(
+                  //             color: Colors.black54,
+                  //             fontStyle: FontStyle.italic,
+                  //             fontWeight: FontWeight.bold,
+                  //             fontSize: 20)),
+                  //     Text(
+                  //       '${selectedDate.year}' +
+                  //           '/' +
+                  //           '${selectedDate.month}' +
+                  //           '/' +
+                  //           '${selectedDate.day}',
+                  //       style: TextStyle(
+                  //         color: Colors.black54,
+                  //         fontStyle: FontStyle.italic,
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 20,
+                  //       ),
+                  //     ),
+                  //     ElevatedButton(
+                  //       style: ButtonStyle(
+                  //           backgroundColor: MaterialStateProperty.all<Color>(
+                  //               Colors.blue)),
+                  //       child: Text(
+                  //         "selectDate",
+                  //         style: TextStyle(
+                  //             color: Colors.white,
+                  //             fontStyle: FontStyle.italic,
+                  //             fontWeight: FontWeight.bold,
+                  //             fontSize: 20),
+                  //       ),
+                  //       onPressed: () {
+                  //         _selectedDate(context);
+                  //       },
+                  //     ),
+                  //   ],
+                  // ),
+                 // Padding(padding: EdgeInsets.only(top: 80)),
+                  Spacer(),
+                  (applied==false)?
 
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: notes,
-                    textCapitalization: TextCapitalization.words,
+                  Container(
 
+                    padding: EdgeInsets.all(6),
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                        style:ButtonStyle(
 
-                    decoration:  InputDecoration(
-                        border:OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20))
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelText:'notes'.tr(),
+                            backgroundColor: MaterialStateProperty.all(CustomColors.button),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.circular(18.0), // radius you want
+                                  side: BorderSide(
+                                    color: Colors.transparent, //color
+                                  ),
+                                ))),
+                        onPressed: () async {
+                      setState((){
+                        isLoading=true;
+                      });
 
-                        labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
-                    ),
-                  ),
-                ) ,
-                InkWell(child:
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    readOnly: true,
-                    controller: date,
-                    onTap: (){ _selectedDate(context);},
-                    textCapitalization: TextCapitalization.words,
-                    decoration:  InputDecoration(
-                        border:OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20))
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        labelText:'date'.tr(),
+                      await addAppli();
+                      setState((){
+                        isLoading=false;
+                      });
+                      Navigator.pop(context);
 
-
-                        labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
-                    ),
-                  ),
-                ),
-                onTap:(){ _selectedDate(context);} ) ,
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Icon(
-                //       Icons.date_range,
-                //       size: 20,
-                //       color: Colors.black54,
-                //     ),
-                //     Text(
-                //         "date",
-                //         style: TextStyle(
-                //             color: Colors.black54,
-                //             fontStyle: FontStyle.italic,
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 20)),
-                //     Text(
-                //       '${selectedDate.year}' +
-                //           '/' +
-                //           '${selectedDate.month}' +
-                //           '/' +
-                //           '${selectedDate.day}',
-                //       style: TextStyle(
-                //         color: Colors.black54,
-                //         fontStyle: FontStyle.italic,
-                //         fontWeight: FontWeight.bold,
-                //         fontSize: 20,
-                //       ),
-                //     ),
-                //     ElevatedButton(
-                //       style: ButtonStyle(
-                //           backgroundColor: MaterialStateProperty.all<Color>(
-                //               Colors.blue)),
-                //       child: Text(
-                //         "selectDate",
-                //         style: TextStyle(
-                //             color: Colors.white,
-                //             fontStyle: FontStyle.italic,
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 20),
-                //       ),
-                //       onPressed: () {
-                //         _selectedDate(context);
-                //       },
-                //     ),
-                //   ],
-                // ),
-               // Padding(padding: EdgeInsets.only(top: 80)),
-                Spacer(),
-                (applied==false)?
-
-                Container(
-                  padding: EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width,
-                  child: ElevatedButton(
-                      style:ButtonStyle(
-
-                          backgroundColor: MaterialStateProperty.all(CustomColors.button),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(18.0), // radius you want
-                                side: BorderSide(
-                                  color: Colors.transparent, //color
-                                ),
-                              ))),
-                      onPressed: () async {
-                    setState((){
-                      isLoading=true;
-                    });
-
-                    await addAppli();
-                    setState((){
-                      isLoading=false;
-                    });
-                    Navigator.pop(context);
-
-                  }, child:Text("add".tr())),
-                ):
-                Text("you applied alredy".tr()),
-                Padding(padding: EdgeInsets.only(top: 10))
+                    }, child:Text("add".tr())),
+                  ):
+                  Text("you applied alredy".tr()),
+                  Padding(padding: EdgeInsets.only(top: 10))
 
 
-              ]),
+                ]),
+          ),
         ),
       ),
 

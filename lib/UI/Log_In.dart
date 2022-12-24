@@ -199,11 +199,11 @@ Padding(padding: EdgeInsets.only(top: 10)),
 
                         Padding(
                             padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height / 14)),
+                                top: MediaQuery.of(context).size.height / 25)),
                         (isLoading == false)
                             ?
                         Container(
-                          height: 50,
+                          height: MediaQuery.of(context).size.height/15,
 
                          // decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
                           width: MediaQuery.of(context).size.width/1.5,
@@ -243,7 +243,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               )),
                         )
                             : Center(child: CircularProgressIndicator()),
-                        Padding(padding: EdgeInsets.only(top: 10)),
+                        Padding(padding: EdgeInsets.only(top: 5)),
                         InkWell(
                           child: Text("Don't have an account".tr()),
                           onTap: () {
@@ -252,7 +252,8 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                 MaterialPageRoute(builder: (context) => SignUp("30.044420"," 31.235712","","","male","manger","")),
                                     (Route<dynamic> route) => false);
                           },
-                        )
+                        ),
+                  //Padding(padding: EdgeInsets.only(top:5))
                       ],
                     ),
                   )),

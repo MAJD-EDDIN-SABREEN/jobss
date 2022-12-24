@@ -83,7 +83,7 @@ print (id);
                     return
                       InkWell(
                         child: Container(
-                          height: MediaQuery.of(context).size.height/3,
+                          height: MediaQuery.of(context).size.height/2.5,
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
                         child: Card(
                           shape: RoundedRectangleBorder(
