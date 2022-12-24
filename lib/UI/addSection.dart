@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +75,12 @@ class AddSectionState extends State<AddSection>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.black,
-      title: Text("Add Section"),
+      title: Text("Add Section".tr()),
         centerTitle: true,
       ),
       body:
       Container(
-        height: MediaQuery.of(context).size.height/2,
+        //height: MediaQuery.of(context).size.height/2,
         child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
@@ -88,10 +89,12 @@ class AddSectionState extends State<AddSection>{
 margin: EdgeInsets.all(15),
           elevation: 10,
           child: Container(
-
+              height: MediaQuery.of(context).size.height/2,
+           // width:  MediaQuery.of(context).size.width/2,
             padding: EdgeInsets.all(10),
             child:
             Column(
+
 
                 children: [
                   (file==null)?
@@ -109,13 +112,13 @@ color: Colors.grey
                           BuildContext context) {
                         return
                           AlertDialog(
-                            title: Text("please select"),
+                            title: Text("please select".tr()),
                             actions: [
                               InkWell(
                                 child: Row(
                                   children: [
                                     Icon(Icons.camera_alt),
-                                    Text("From camera")
+                                    Text("From camera".tr())
                                   ],
                                 )
                                 , onTap: () {
@@ -128,7 +131,7 @@ color: Colors.grey
                                 child: Row(
                                   children: [
                                     Icon(Icons.image),
-                                    Text("From gallery")
+                                    Text("From gallery".tr())
                                   ],
                                 ),
                                 onTap: () {
@@ -160,13 +163,13 @@ color: Colors.grey
                        BuildContext context) {
                      return
                        AlertDialog(
-                         title: Text("please select"),
+                         title: Text("please select".tr()),
                          actions: [
                            InkWell(
                              child: Row(
                                children: [
                                  Icon(Icons.camera_alt),
-                                 Text("From camera")
+                                 Text("From camera".tr())
                                ],
                              )
                              , onTap: () {
@@ -179,7 +182,7 @@ color: Colors.grey
                              child: Row(
                                children: [
                                  Icon(Icons.image),
-                                 Text("From gallery")
+                                 Text("From gallery".tr())
                                ],
                              ),
                              onTap: () {
@@ -199,13 +202,13 @@ color: Colors.grey
                   child:TextFormField(
                     controller: title,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Field is required.';
+                      if (value == null || value.isEmpty) return 'Field is required.'.tr();
                       return null;
                     },
                     textCapitalization: TextCapitalization.words,
 
 
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         fillColor: Colors.white,
 
                         filled: true,
@@ -213,12 +216,12 @@ color: Colors.grey
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                        // icon: Icon(Icons.pages_outlined),
-                        labelText:'Title',
+                        labelText:'Title'.tr(),
 
                         labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
                     ),
                   )) ,
-                  Padding(padding: EdgeInsets.only(top: 50)),
+                  Spacer(),
                   (isLoading==false) ?
                   SizedBox(
                     width: MediaQuery.of(context).size.width,

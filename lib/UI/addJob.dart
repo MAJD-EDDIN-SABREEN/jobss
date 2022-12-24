@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,16 +16,23 @@ import 'package:jobss/UI/map.dart';
 import 'package:path/path.dart';
 
 import '../main.dart';
+import 'CustomColors.dart';
 
 class AddJob extends StatefulWidget {
   String sectionId;
   String lat;
   String lang;
-  AddJob(this.sectionId,this.lat,this.lang);
+  String titlee;
+  String descrptuonn;
+  String requirementss;
+  String pricee;
+  String agee;
+  String statuss;
+  AddJob(this.sectionId,this.lat,this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss);
 
   @override
   State<StatefulWidget> createState() {
-    return AddJobState(this.sectionId,this.lat,this.lang);
+    return AddJobState(this.sectionId,this.lat,this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss);
   }
 }
 
@@ -38,7 +46,12 @@ class AddJobState extends State<AddJob> {
   String lat;
   String lang;
 
-
+  String titlee;
+  String descrptuonn;
+  String requirementss;
+  String pricee;
+  String agee;
+  String statuss;
 
   TextEditingController title = new TextEditingController();
   TextEditingController descrptuon = new TextEditingController();
@@ -52,7 +65,7 @@ class AddJobState extends State<AddJob> {
   LatLng ?startLocation ;
   String location = "Search Location";
 
-  AddJobState(this.sectionId,this.lat, this.lang);
+  AddJobState(this.sectionId,this.lat, this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss);
   Set<Marker>?myMarker;
 
   Completer<GoogleMapController> _controller = Completer();
@@ -62,10 +75,9 @@ class AddJobState extends State<AddJob> {
     zoom: 14.4746,
   );
 
-  addJob(BuildContext context) async {
+  addJob() async {
     var formData = formStateAddJob.currentState;
     if (formData!.validate()) {
-      print("dhdhhd");
       formData.save();
       DateTime now = new DateTime.now();
       DateTime date = new DateTime(now.year, now.month, now.day);
@@ -88,9 +100,9 @@ try{
       "image": url.toString(),
 
   });
-  Navigator.pop(context);
+
 }catch(e){
-  print("dhdhhd");
+  print(e);
 }
 
     }
@@ -134,6 +146,13 @@ try{
     myMarker={
       Marker(markerId: MarkerId("1"),position:LatLng(double.parse(lat),double.parse(lang)) )
     };
+    title.text=titlee;
+    descrptuon.text=descrptuonn;
+    price.text=pricee;
+    requirements.text=requirementss;
+    age.text=agee;
+    status.text=statuss;
+
     super.initState();
   }
 
@@ -142,7 +161,7 @@ try{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("Add Job"),
+        title: Text("Add Job".tr()),
         centerTitle: true,
       ),
         body: SingleChildScrollView(
@@ -178,13 +197,13 @@ try{
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text("please select"),
+                                title: Text("please select".tr()),
                                 actions: [
                                   InkWell(
                                     child: Row(
                                       children: [
                                         Icon(Icons.camera_alt),
-                                        Text("From camera")
+                                        Text("From camera".tr())
                                       ],
                                     ),
                                     onTap: () {
@@ -199,7 +218,7 @@ try{
                                     child: Row(
                                       children: [
                                         Icon(Icons.image),
-                                        Text("From gallery")
+                                        Text("From gallery".tr())
                                       ],
                                     ),
                                     onTap: () {
@@ -227,13 +246,13 @@ try{
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text("please select"),
+                              title: Text("please select".tr()),
                               actions: [
                                 InkWell(
                                   child: Row(
                                     children: [
                                       Icon(Icons.camera_alt),
-                                      Text("From camera")
+                                      Text("From camera".tr())
                                     ],
                                   ),
                                   onTap: () {
@@ -248,7 +267,7 @@ try{
                                   child: Row(
                                     children: [
                                       Icon(Icons.image),
-                                      Text("From gallery")
+                                      Text("From gallery".tr())
                                     ],
                                   ),
                                   onTap: () {
@@ -268,17 +287,17 @@ try{
                   child: TextFormField(
                     controller: title,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Field is required.';
+                      if (value == null || value.isEmpty) return 'Field is required.'.tr();
                       return null;
                     },
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: 'Title',
+                        labelText: 'Title'.tr(),
                         labelStyle: TextStyle(
                             color: Colors.black87,fontSize: 10)),
                   ),
@@ -293,13 +312,13 @@ try{
                       return null;
                     },
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: 'Descrption',
+                        labelText: 'Descrption'.tr(),
                         labelStyle: TextStyle(
                             color: Colors.black87,fontSize: 10)),
                   ),
@@ -309,18 +328,18 @@ try{
                   child: TextFormField(
                     controller: price,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Field is required.';
+                      if (value == null || value.isEmpty) return 'Field is required.'.tr();
                       return null;
                     },
                     textCapitalization: TextCapitalization.words,
                     keyboardType:TextInputType.number ,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: 'salary',
+                        labelText: 'salary'.tr(),
                         labelStyle: TextStyle(
                             color: Colors.black87,fontSize: 10)),
                   ),
@@ -330,17 +349,17 @@ try{
                   child: TextFormField(
                     controller: requirements,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Field is required.';
+                      if (value == null || value.isEmpty) return 'Field is required.'.tr();
                       return null;
                     },
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: 'requirement',
+                        labelText: 'requirement'.tr(),
                         labelStyle: TextStyle(
                             color: Colors.black87,fontSize: 10)),
                   ),
@@ -350,18 +369,18 @@ try{
                   child: TextFormField(
                     controller: age,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Field is required.';
+                      if (value == null || value.isEmpty) return 'Field is required.'.tr();
                       return null;
                     },
                     textCapitalization: TextCapitalization.words,
                     keyboardType:TextInputType.number ,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: 'age',
+                        labelText: 'age'.tr(),
                         labelStyle: TextStyle(
                             color: Colors.black87,fontSize: 10)),
                   ),
@@ -371,19 +390,19 @@ try{
                   child: TextFormField(
                     controller: status,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Field is required.';
+                      if (value == null || value.isEmpty) return 'Field is required.'.tr();
                       return null;
                     },
                     keyboardType:TextInputType.number ,
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                        fillColor: Colors.white,
                        // icon: Icon(Icons.safety_divider),
-                        labelText: 'status',
+                        labelText: 'status'.tr(),
                         labelStyle: TextStyle(
                             color: Colors.black87,fontSize: 10)),
                   ),
@@ -427,7 +446,8 @@ try{
                     ]),
                   ),
                   onLongPress: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap(lat, lang,1,sectionId)));
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap("", "", title.text, descrptuon.text, price.text,
+                        requirements.text, age.text, status.text,lat, lang,1,sectionId,"","","","","")));
 
                   },
                 ),
@@ -440,10 +460,10 @@ try{
                 //     },
                 //   ),
                 // ),
-
+//Spacer(),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width/1.3,
                   height: MediaQuery.of(context).size.height/20,
 
                   child:(  isLoading == false)?
@@ -469,7 +489,6 @@ try{
                           var refStorage =
                           FirebaseStorage.instance.ref("images/$nameImage");
                           await refStorage.putFile(file!);
-
                           url = await refStorage.getDownloadURL();
                         }
 
@@ -477,14 +496,16 @@ try{
                         setState(() {
 
                         });
-                        addJob(context);
+                        addJob();
+                        Navigator.pop(context);
                         setState(() {
                           isLoading = false;
                         });
 
                       },
-                      child: Text("add")):Center(child: CircularProgressIndicator(),),
+                      child: Text("add".tr())):Center(child: CircularProgressIndicator(),),
                 ),
+                Padding(padding: EdgeInsets.only(top: 10))
               ]),),
         ),
       )

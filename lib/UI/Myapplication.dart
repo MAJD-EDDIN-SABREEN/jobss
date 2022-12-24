@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class MyApplication extends StatefulWidget {
@@ -61,7 +62,7 @@ print (id);
     return
       Scaffold(
         appBar: AppBar(
-          title: Text("My Application"),
+          title: Text("My Application".tr()),
           centerTitle: true,
           backgroundColor: Colors.black,
         ),
@@ -71,7 +72,7 @@ print (id);
             builder:(context,snapshots){
 
               if(snapshots.hasError){
-                return Text("erorr");
+                return Text("erorr".tr());
               }
               if (snapshots.hasData){
                 return ListView.builder(
@@ -82,7 +83,7 @@ print (id);
                     return
                       InkWell(
                         child: Container(
-                          height: MediaQuery.of(context).size.height/4,
+                          height: MediaQuery.of(context).size.height/3,
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -95,14 +96,31 @@ print (id);
 child:
 Column(crossAxisAlignment: CrossAxisAlignment.center,
     children:  [
+      Padding(
+        padding: EdgeInsets.only(top: 10,right: 10,left: 10),
+        child:
+
+        Row(
+            mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+            children: [
+
+              Text("job  :".tr(),style: TextStyle(fontWeight: FontWeight.bold),),
+              Text(
+                  "${snapshots.data.docs[i].data()["jobName"]}")
+            ]),
+
+      ),
   Padding(
     padding: EdgeInsets.only(top: 10,right: 10,left: 10),
-    child: Row(
+    child:
+
+    Row(
           mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
           children: [
 
-            Text("Expected salary :",style: TextStyle(fontWeight: FontWeight.bold),),
+            Text("Expected salary :".tr(),style: TextStyle(fontWeight: FontWeight.bold),),
             Text(
                 "${snapshots.data.docs[i].data()["expected salary"]}")
           ]),
@@ -114,7 +132,7 @@ Column(crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
           children: [
-            Text("Notes :",style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Notes :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
             Text(
                 "${snapshots.data.docs[i].data()["notes"]}")
           ]),
@@ -126,7 +144,7 @@ Column(crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
           children: [
-            Text("Start At :",style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Start At :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
             Text(
                 "${snapshots.data.docs[i].data()["Start_at"]}")
           ]),
@@ -138,7 +156,7 @@ Column(crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
           children: [
-            Text("Created At :",style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Created At :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
             Text(
                 "${snapshots.data.docs[i].data()["created_at"]}")
           ]),
@@ -150,7 +168,7 @@ Column(crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment:
             MainAxisAlignment.spaceBetween,
             children: [
-              Text("Status :",style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("Status :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
               if ((snapshots.data.docs[i]
                   .data()["status"])
                   .toString() ==
@@ -160,12 +178,12 @@ Column(crossAxisAlignment: CrossAxisAlignment.center,
                   .data()["status"])
                   .toString() ==
                   "1")
-                Text("Acceptable")
+                Text("Acceptable".tr())
               else if ((snapshots.data.docs[i]
                     .data()["status"])
                     .toString() ==
                     "2")
-                  Text("UnAcceptable"),
+                  Text("UnAcceptable".tr()),
             ]),
   ),
 

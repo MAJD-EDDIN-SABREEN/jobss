@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
+import 'CustomColors.dart';
 
 class ShowApplicaton extends StatefulWidget {
   String sectionId;
@@ -85,10 +87,10 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
 
       ),
       body: StreamBuilder<dynamic>(
-          stream: jobRef.snapshots(),
+          stream: jobRef.where("jobid",isEqualTo: jobId).snapshots(),
           builder: (context, snapshots) {
             if (snapshots.hasError) {
-              return Text("erorr");
+              return Text("erorr".tr());
             }
             if (snapshots.hasData) {
               return ListView.builder(
@@ -96,7 +98,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                 itemBuilder: (context, i) {
                   return ListTile(
                     //trailing: Icon(Icons.monetization_on),
-                    leading: Icon(Icons.settings_applications_outlined),
+                    leading: Icon(Icons.padding),
                     title: Text(username),
                     subtitle: Text(email),
                     onTap: () async {
@@ -115,7 +117,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Expected salary"),
+                                        Text("Expected salary".tr()),
                                         Text(
                                             "${snapshots.data.docs[i].data()["expected salary"]}")
                                       ]),
@@ -126,7 +128,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Notes"),
+                                        Text("Notes".tr()),
                                         Text(
                                             "${snapshots.data.docs[i].data()["notes"]}")
                                       ]),
@@ -137,7 +139,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Start At"),
+                                        Text("Start At".tr()),
                                         Text(
                                             "${snapshots.data.docs[i].data()["Start_at"]}")
                                       ]),
@@ -148,7 +150,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Created At"),
+                                        Text("Created At".tr()),
                                         Text(
                                             "${snapshots.data.docs[i].data()["created_at"]}")
                                       ]),
@@ -159,12 +161,12 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Status"),
+                                          Text("Status".tr()),
                                           if ((snapshots.data.docs[i]
                                                       .data()["status"])
                                                   .toString() ==
                                               "0")
-                                            Text("Wating")
+                                            Text("Wating".tr())
                                           else if ((snapshots.data.docs[i]
                                                       .data()["status"])
                                                   .toString() ==
@@ -200,7 +202,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                                         .toString());
                                                 Navigator.pop(context);
                                               },
-                                              child: Text("Acceptable")),
+                                              child: Text("Acceptable".tr())),
                                           ElevatedButton(
                                               style:ButtonStyle(
                                                   backgroundColor: MaterialStateProperty.all(CustomColors.button),
@@ -218,7 +220,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                                         .toString());
                                                 Navigator.pop(context);
                                               },
-                                              child: Text("UnAcceptable"))
+                                              child: Text("UnAcceptable".tr()))
                                         ],
                                       )
                                     : Center()

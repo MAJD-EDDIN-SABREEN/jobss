@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+
+import 'map.dart';
 
 class JobDetail extends StatefulWidget {
   String id;
@@ -88,6 +91,7 @@ class JobDetailState extends State<JobDetail> {
           "title": title1.text,
           "description": description1.text,
           "requirement":requirements1.text,
+          "salary":salary1.text,
           "age":age1.text,
           "status":status1,
           "lat":lat,
@@ -168,7 +172,7 @@ class JobDetailState extends State<JobDetail> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("Ubdate Job"),
+        title: Text("Update Job".tr()),
         centerTitle: true,
       ),
       body:SingleChildScrollView(scrollDirection: Axis.vertical,
@@ -207,13 +211,13 @@ class JobDetailState extends State<JobDetail> {
                       showDialog(context: context, builder: (BuildContext context) {
                         return
                           AlertDialog(
-                            title: Text("please select"),
+                            title: Text("please select".tr()),
                             actions: [
                               InkWell(
                                 child: Row(
                                   children: [
                                     Icon(Icons.camera_alt),
-                                    Text("From camera")
+                                    Text("From camera".tr())
                                   ],
                                 )
                                 , onTap: () {
@@ -226,7 +230,7 @@ class JobDetailState extends State<JobDetail> {
                                 child: Row(
                                   children: [
                                     Icon(Icons.image),
-                                    Text("From gallery")
+                                    Text("From gallery".tr())
                                   ],
                                 ),
                                 onTap: () {
@@ -259,13 +263,13 @@ class JobDetailState extends State<JobDetail> {
                         showDialog(context: context, builder: (BuildContext context) {
                           return
                             AlertDialog(
-                              title: Text("please select"),
+                              title: Text("please select".tr()),
                               actions: [
                                 InkWell(
                                   child: Row(
                                     children: [
                                       Icon(Icons.camera_alt),
-                                      Text("From camera")
+                                      Text("From camera".tr())
                                     ],
                                   )
                                   , onTap: () {
@@ -278,7 +282,7 @@ class JobDetailState extends State<JobDetail> {
                                   child: Row(
                                     children: [
                                       Icon(Icons.image),
-                                      Text("From gallery")
+                                      Text("From gallery".tr())
                                     ],
                                   ),
                                   onTap: () {
@@ -298,17 +302,17 @@ class JobDetailState extends State<JobDetail> {
                     child: TextFormField(
                       controller: title1,
                       validator: (value) {
-                        if (value == null || value.isEmpty) return 'Field is required.';
+                        if (value == null || value.isEmpty) return 'Field is required.'.tr();
                         return null;
                       },
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                           border:OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20))
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: 'Title',
+                          labelText: 'Title'.tr(),
 
                           labelStyle: TextStyle(
                               color: Colors.black87,fontSize: 10)
@@ -320,17 +324,17 @@ class JobDetailState extends State<JobDetail> {
                     child: TextFormField(
                       controller: description1,
                       validator: (value) {
-                        if (value == null || value.isEmpty) return 'Field is required.';
+                        if (value == null || value.isEmpty) return 'Field is required.'.tr();
                         return null;
                       },
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                           border:OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20))
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: 'Description',
+                          labelText: 'Description'.tr(),
 
                           labelStyle: TextStyle(
                               color: Colors.black87,fontSize: 10)
@@ -342,17 +346,17 @@ class JobDetailState extends State<JobDetail> {
                     child: TextFormField(
                       controller: salary1,
                       validator: (value) {
-                        if (value == null || value.isEmpty) return 'Field is required.';
+                        if (value == null || value.isEmpty) return 'Field is required.'.tr();
                         return null;
                       },
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                           border:OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20))
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: 'Salary',
+                          labelText: 'Salary'.tr(),
 
                           labelStyle: TextStyle(
                               color: Colors.black87,fontSize: 10)
@@ -364,17 +368,17 @@ class JobDetailState extends State<JobDetail> {
                     child: TextFormField(
                       controller: requirements1,
                       validator: (value) {
-                        if (value == null || value.isEmpty) return 'Field is required.';
+                        if (value == null || value.isEmpty) return 'Field is required.'.tr();
                         return null;
                       },
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                           border:OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20))
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: 'requirement',
+                          labelText: 'requirement'.tr(),
                           labelStyle: TextStyle(
                               color: Colors.black87,fontSize: 10)),
                     ),
@@ -384,18 +388,18 @@ class JobDetailState extends State<JobDetail> {
                     child: TextFormField(
                       controller: age1,
                       validator: (value) {
-                        if (value == null || value.isEmpty) return 'Field is required.';
+                        if (value == null || value.isEmpty) return 'Field is required.'.tr();
                         return null;
                       },
                       textCapitalization: TextCapitalization.words,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                           border:OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20))
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: 'age',
+                          labelText: 'age'.tr(),
                           labelStyle: TextStyle(
                               color: Colors.black87,fontSize: 10)),
                     ),
@@ -408,61 +412,44 @@ class JobDetailState extends State<JobDetail> {
 
                     //  Text("Status",style: TextStyle(fontWeight: FontWeight.bold),)
                     ],),
-                  // DropDownTextField(
-                  //   padding: EdgeInsets.only(left: 50),
-                  //   dropdownRadius: 20,
-                  //   listSpace: 20,
-                  //   listPadding: ListPadding(top: 20),
-                  //   initialValue: status,
-                  //   //enableSearch: true,
-                  //
-                  //   validator: (value) {
-                  //     if (value == null) {
-                  //       return "Required field";
-                  //     } else {
-                  //       return null;
-                  //     }
-                  //   },
-                  //   dropDownList: const [
-                  //     DropDownValueModel(name: 'available', value: "T"),
-                  //     DropDownValueModel(name: ' not available', value: "F"),
-                  //   ],
-                  //   listTextStyle: const TextStyle(color: Colors.blue),
-                  //   dropDownItemCount: 8,
-                  //   onChanged: (val) {
-                  //     status1=val.toString();
-                  //   },
-                  // ),
-                  Container(
-                      padding: EdgeInsets.only(top: 10),
-                    height: MediaQuery.of(context).size.height/7,child: GoogleMap(
 
-                    zoomGesturesEnabled: true,
-                    initialCameraPosition: CameraPosition(
+                  InkWell(
+                    child: Container(
+                        padding: EdgeInsets.only(top: 10),
+                      height: MediaQuery.of(context).size.height/7,child: GoogleMap(
 
-                      target: startLocation!,
-                      zoom: 14.0,
-                    )
-                    ,
-                    markers: myMarker!,
-                    mapType: MapType.normal,
-                    onTap: (latlang){
-                      setState(() {
-                        myMarker!.remove(Marker(markerId: MarkerId("1")));
-                        myMarker!.add( Marker(markerId: MarkerId("1"),position:latlang ));
-                        lat=latlang.latitude.toString();
-                        lang=latlang.longitude.toString();
-                      });
-                      print(latlang.latitude);
+                      zoomGesturesEnabled: true,
+                      initialCameraPosition: CameraPosition(
 
-                    },//map type
-                    onMapCreated: (controller) {
-                      //method called when map is created
-                      setState(() {
-                        mapController = controller;
-                      });
+                        target: startLocation!,
+                        zoom: 14.0,
+                      )
+                      ,
+                      markers: myMarker!,
+                      mapType: MapType.normal,
+                      onTap: (latlang){
+                        setState(() {
+                          myMarker!.remove(Marker(markerId: MarkerId("1")));
+                          myMarker!.add( Marker(markerId: MarkerId("1"),position:latlang ));
+                          lat=latlang.latitude.toString();
+                          lang=latlang.longitude.toString();
+                        });
+                        print(latlang.latitude);
+
+                      },//map type
+                      onMapCreated: (controller) {
+                        //method called when map is created
+                        setState(() {
+                          mapController = controller;
+                        });
+                      },
+                    ) ,),
+                    onLongPress: (){
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap(this.id, this.image, this.title, this.descrption, this.price,
+                          this.requirements, this.age, this.status,lat, lang,2,sectionId,"","","","","")));
+
                     },
-                  ) ,),
+                  ),
 
 
 
@@ -510,7 +497,7 @@ class JobDetailState extends State<JobDetail> {
                             isLoading = false;
                           });
 
-                        }, child: Text("Update")),
+                        }, child: Text("Update".tr())),
                       ) :
                       Center(child: CircularProgressIndicator()),
                       Padding(padding: EdgeInsets.only(left: 5)),
@@ -537,7 +524,7 @@ class JobDetailState extends State<JobDetail> {
                             isLoading = false;
                           });
                           Navigator.pop(context);
-                        }, child: Text("Delete")),
+                        }, child: Text("Delete".tr())),
                       ) :
                       Center(child: CircularProgressIndicator())
                     ],

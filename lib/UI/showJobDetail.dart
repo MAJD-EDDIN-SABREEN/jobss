@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,7 +68,8 @@ class _ShowJobState extends State<ShowJob> {
       this.sectionId,
       this.lat,
       this.lang);
-  var userPref=FirebaseFirestore.instance.collection("Users");
+  List Userid=[];
+  var userPref=FirebaseFirestore.instance.collection("Application");
   LatLng ?startLocation;
   Set<Marker>?myMarker;
 String ?uid;
@@ -78,6 +80,23 @@ String ?uid;
     setState(() {
 
     });
+  }
+  getUserId() async {
+    try {
+
+
+      var userPref = FirebaseFirestore.instance.collection("Application");
+      var query = await userPref.where("jobid", isEqualTo: id).get();
+      for (int i = 0; i < query.docs.length; i++) {
+        Userid.add(query.docs[i]["userid"]) ;
+        setState(() {
+
+        });
+      }
+    }
+    catch(e){
+      print(e);
+    }
   }
     void initState() {
 
@@ -172,9 +191,10 @@ String ?uid;
 
 
                     InkWell(
-                      child: Container(padding:EdgeInsets.only( top:10,bottom: 10,left: 40,right:40 ),
+                      child: Container(
+                        padding:EdgeInsets.only( top:10,left: 40,right:40 ),
 
-                        height: MediaQuery.of(context).size.height/2.5,
+                        height: MediaQuery.of(context).size.height/3,
                         width: MediaQuery.of(context).size.width,
                         child: GoogleMap(
                           //Map widget from google_maps_flutter package
@@ -263,14 +283,15 @@ String ?uid;
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height/1.2,
             child: StreamBuilder<dynamic>(
-              stream:userPref.where("id",isEqualTo: uid).snapshots(),
+              stream:userPref.where("userid",isEqualTo: uid).where("jobid",isEqualTo:id).snapshots(),
               builder:(context,snapshots){
 
                 if(snapshots.hasError){
-                  return Text("erorr");
+                  return Text("erorr".tr());
                 }
                 if (snapshots.hasData){
-                  return ListView.builder(
+                  return
+                    ListView.builder(
                     itemCount: snapshots.data.docs!.length,
                     itemBuilder: (context,i)
                     {
@@ -307,17 +328,18 @@ String ?uid;
                                               decoration: BoxDecoration(
 
                                                 shape: BoxShape.circle,
-                                                image: DecorationImage(
 
-                                                    fit: BoxFit.fill, image:NetworkImage("${snapshots.data.docs[i].data()["image"]}"))
-                                            ) ,),
+                                                  ) ,
+                                           child: Icon(Icons.person),),
                                          ),
 
-                                        Column(mainAxisAlignment: MainAxisAlignment.start,
+                                        Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [ Text("${snapshots.data.docs[i].data()["name"]}",style: TextStyle(fontSize: 15),),
                                           Text("${snapshots.data.docs[i].data()["email"]}",style: TextStyle(fontSize: 10,color: Colors.black45),),
-                                          Text("${snapshots.data.docs[i].data()["skills"]}"),],),
+                                            Text("${snapshots.data.docs[i].data()["notes"]}",style: TextStyle(fontSize: 10,color: Colors.black45),),
+
+                                          ],),
                                       ],)
 
 

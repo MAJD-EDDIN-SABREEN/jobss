@@ -1,23 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jobss/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'CustomColors.dart';
 class Application extends StatefulWidget {
   String sectionId;
    String jobId;
-  Application(this.sectionId,this.jobId);
+  String jobName;
+  Application(this.sectionId,this.jobId,this.jobName);
 
   @override
-  State<Application> createState() => _ApplicationState(this.sectionId,this.jobId);
+  State<Application> createState() => _ApplicationState(this.sectionId,this.jobId,this.jobName);
 }
 
 class _ApplicationState extends State<Application>  {
   String sectionId;
   String jobId;
+  String jobName;
   String id='';
    bool applied=false;
-  _ApplicationState(this.sectionId, this.jobId);
+  _ApplicationState(this.sectionId, this.jobId,this.jobName);
   DateTime selectedDate = DateTime.now();
   bool isLoading = false;
   TextEditingController expactSalary=new TextEditingController();
@@ -51,20 +56,43 @@ class _ApplicationState extends State<Application>  {
     DateTime date = new DateTime(now.year, now.month, now.day);
     final prefs = await SharedPreferences.getInstance();
     String? id1= await prefs.getString("id");
+
     setState(() {
     id=id1.toString();
     });
+    print(id);
+    var userPref = FirebaseFirestore.instance.collection("Users");
+    var query = await userPref.where("id", isEqualTo: id).get();
+    print(query.docs[0]);
+    var name =await query.docs[0]["name"] ;
+
+    var email=await query.docs[0]["email"] ;
+
+
+    //var skills=await query.docs[0]["skills"] ;
+    //print(skills);
+
     var userspref = await FirebaseFirestore.instance.collection("Application");
-    userspref.add({
+   try{ userspref.add({
       "expected salary": expactSalary.text,
       "notes":notes.text,
       "Start_at":"${selectedDate.year}"+"-"+"${selectedDate.month}"+"-"+"${selectedDate.day}",
       "userid":id,
       "status":"0",
       "created_at":date.toString()
-      ,"jobid":jobId,
+      ,
+     "jobName":jobName,
+      "jobid":jobId,
       "sectionid":sectionId
-    });
+      ,"name":name,
+      "email":email,
+      //"skills":skills
+
+    });}
+       catch(e){
+         print(e);
+       }
+
   }
   Future<void> _selectedDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -97,7 +125,7 @@ class _ApplicationState extends State<Application>  {
   Widget build(BuildContext context) {
     getapplied();
     return  Scaffold(
-      appBar: AppBar(title: Text("Add Application"),
+      appBar: AppBar(title: Text("Add Application".tr()),
       backgroundColor: Colors.black,
       centerTitle: true),
       body: 
@@ -124,14 +152,14 @@ Padding(padding: EdgeInsets.only(top: 10)),
                     textCapitalization: TextCapitalization.words,
 
 keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
 
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText:'Expacted Salary',
+                        labelText:'Expected Salary'.tr(),
 
                         labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
                     ),
@@ -145,13 +173,13 @@ keyboardType: TextInputType.number,
                     textCapitalization: TextCapitalization.words,
 
 
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText:'notes',
+                        labelText:'notes'.tr(),
 
                         labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
                     ),
@@ -165,13 +193,13 @@ keyboardType: TextInputType.number,
                     controller: date,
                     onTap: (){ _selectedDate(context);},
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border:OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20))
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        labelText:'date',
+                        labelText:'date'.tr(),
 
 
                         labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
@@ -225,10 +253,12 @@ keyboardType: TextInputType.number,
                 //     ),
                 //   ],
                 // ),
-                Padding(padding: EdgeInsets.only(top: 80)),
+               // Padding(padding: EdgeInsets.only(top: 80)),
+                Spacer(),
                 (applied==false)?
 
-                SizedBox(
+                Container(
+                  padding: EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
                       style:ButtonStyle(
@@ -253,9 +283,10 @@ keyboardType: TextInputType.number,
                     });
                     Navigator.pop(context);
 
-                  }, child:Text("add")),
+                  }, child:Text("add".tr())),
                 ):
-                Text("you applied alredy"),
+                Text("you applied alredy".tr()),
+                Padding(padding: EdgeInsets.only(top: 10))
 
 
               ]),

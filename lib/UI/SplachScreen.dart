@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jobss/UI/onBordingPages.dart';
 import 'package:lottie/lottie.dart';
@@ -50,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.black,
+        color: Colors.white,
         child: Column(
           children: [
             Padding(
@@ -68,8 +69,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     EdgeInsets.only(top:10)),
             Center(
               child: Text(
-                "Jobs",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),
+                "Jobs".tr(),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,color: Colors.grey),
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Skills extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SkillsState extends State<Skills> {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
-          title: Text("Skills"),
+          title: Text("Skills".tr()),
           centerTitle: true,
         ),
         body:
@@ -38,7 +39,7 @@ class _SkillsState extends State<Skills> {
             builder:(context,snapshots){
 
               if(snapshots.hasError){
-                return Text("erorr");
+                return Text("erorr".tr());
               }
               if (snapshots.hasData){
                 return ListView.builder(
@@ -57,16 +58,19 @@ class _SkillsState extends State<Skills> {
                           borderRadius: BorderRadius.circular(50),
                           //set border radius more than 50% of height and width to make circle
                         ),
-                        child:  Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  Text("${snapshots.data.docs[i].data()["skills"]}"),
-                                  // ListView.builder(itemBuilder: (context,j){
-                                  //   print(snapshots.data.docs[i].data()["name"]);
-                                  //  // Text("${snapshots.data.docs[i].data()["skills"][j]}");
-                                  // })
-                                ]),
+                        child:  SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    Text("${snapshots.data.docs[i].data()["skills"]}",style: TextStyle(overflow: TextOverflow.ellipsis),),
+                                    // ListView.builder(itemBuilder: (context,j){
+                                    //   print(snapshots.data.docs[i].data()["name"]);
+                                    //  // Text("${snapshots.data.docs[i].data()["skills"][j]}");
+                                    // })
+                                  ]),
+                        ),
 
 
 

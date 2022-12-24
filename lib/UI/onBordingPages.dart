@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jobss/UI/SignUp.dart';
 import 'package:onboarding/onboarding.dart';
@@ -23,46 +24,52 @@ class _OnBordingPagesState extends State<OnBordingPages> {
             color: background,
           ),
         ),
-        child: SingleChildScrollView(
-          controller: ScrollController(),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 45.0,
-                  vertical: 90.0,
-                ),
-                child: Image.asset('images/job1.jpg',
-                   //color: pageImageColor,
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 45.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'JOB APP',
-                    style: pageTitleStyle,
-                    textAlign: TextAlign.left,
+        child: Container(
+          //height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 45.0,
+                    vertical: 90.0,
+                  ),
+                  child: Image.asset('images/job1.jpg',
+                     //color: pageImageColor,
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10,bottom: 300,left:45),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Welcome in Job app',
-                    style: pageInfoStyle,
-                    textAlign: TextAlign.left,
+                 Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 45.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'JOB APP'.tr(),
+                      style: pageTitleStyle,
+                      textAlign: TextAlign.left,
+                    ),
                   ),
                 ),
-              ),
+               // Spacer(),
+                Padding(
+   padding: EdgeInsets.symmetric(horizontal: 45.0),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Welcome in Job app'.tr(),
+                        style: pageInfoStyle,
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                ),
+
+                Padding(padding: EdgeInsets.only(top: 1200))
 
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -93,29 +100,30 @@ class _OnBordingPagesState extends State<OnBordingPages> {
                   fit: BoxFit.fitHeight,
                 ),
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 45.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Let find your job',
+                    'Let find your job'.tr(),
                     style: pageTitleStyle,
                     textAlign: TextAlign.left,
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10,bottom: 300,left:45),
+               Padding(
+                padding: EdgeInsets.only(top: 10
+                    ,left:45),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Easily find your job from home',
+                    'Easily find your job from home'.tr(),
                     style: pageInfoStyle,
                     textAlign: TextAlign.left,
                   ),
                 ),
               ),
-
+              Padding(padding: EdgeInsets.only(top: 1200))
 
             ],
           ),
@@ -144,10 +152,10 @@ class _OnBordingPagesState extends State<OnBordingPages> {
             setIndex(1);
           }
         },
-        child: const Padding(
+        child:  Padding(
           padding: defaultSkipButtonPadding,
           child: Text(
-            'Skip',
+            'Skip'.tr(),
             style: defaultSkipButtonTextStyle,
           ),
         ),
@@ -165,12 +173,12 @@ class _OnBordingPagesState extends State<OnBordingPages> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => SignUp("30.044420", "31.235712")));
+                  builder: (context) => SignUp("30.044420", "31.235712","","","male","manger","")));
         },
-        child: const Padding(
+        child:  Padding(
           padding: defaultProceedButtonPadding,
           child: Text(
-            'Sign up',
+            'Sign up'.tr(),
             style: defaultProceedButtonTextStyle,
           ),
         ),
@@ -182,6 +190,7 @@ class _OnBordingPagesState extends State<OnBordingPages> {
   Widget build(BuildContext context) {
     return  Scaffold(
         body: Onboarding(
+
           pages: onboardingPagesList,
           onPageChange: (int pageIndex) {
             index = pageIndex;
@@ -199,7 +208,7 @@ class _OnBordingPagesState extends State<OnBordingPages> {
               child: ColoredBox(
                 color: background,
                 child: Padding(
-                  padding: const EdgeInsets.all(45.0),
+                  padding: const EdgeInsets.all(45),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

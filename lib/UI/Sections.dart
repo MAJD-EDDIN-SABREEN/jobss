@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jobss/main.dart';
@@ -46,7 +47,7 @@ class SectionState extends State<Section> {
 
     }
     setState(() {
-      _selectedIndex = index;
+     // _selectedIndex = index;
       print(_selectedIndex);
     });
   }
@@ -118,7 +119,7 @@ signOut() async {
       (isLoding==true)?
        Scaffold(
         appBar:AppBar(backgroundColor: Colors.black,
-            title: Text("Section"),
+            title: Text("Section".tr()),
             centerTitle: true,
             ),
         // resizeToAvoidBottomInset: false,
@@ -230,7 +231,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                           child:
                             InkWell(
                               child: Text(
-                                  "Section"
+                                  "Section".tr()
                                       ,style: TextStyle(fontSize: 20),
                               ),
                               onTap: () {
@@ -262,7 +263,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                           child:
                           InkWell(
                             child: Text(
-                              "Setting"
+                              "Setting".tr()
                               ,style: TextStyle(fontSize: 20),
                             ),
                             onTap:  () { Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting(role)));}
@@ -296,7 +297,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                             child:
                             InkWell(
                                 child: Text(
-                                  "Logout"
+                                  "Logout".tr()
                                   ,style: TextStyle(fontSize: 20),
                                 ),
                                 onTap:  () async{
@@ -315,7 +316,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
           ),
         ),
         appBar: AppBar(backgroundColor: Colors.black,
-        title: Text("Section"),
+        title: Text("Section".tr()),
         centerTitle: true,
         actions: [
 
@@ -328,7 +329,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
             builder:(context,snapshots){
 
               if(snapshots.hasError){
-                return Text("erorr");
+                return Text("erorr".tr());
               }
               if(snapshots.hasData){
                 return
@@ -405,7 +406,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                           elevation: 50,
                                         backgroundColor: Colors.white,
                                         icon:   Icon(Icons.select_all),
-                                          title: Text("please select"),
+                                          title: Text("please select".tr()),
                                           actions: [
                                             InkWell(
                                               child: Row(
@@ -413,7 +414,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                                 children: [
                                                   Icon(Icons.update),
                                                   Padding(padding: EdgeInsets.only(left: 10)),
-                                                  Text("Update Section")
+                                                  Text("Update Section".tr())
                                                 ],
                                               )
                                               , onTap: () {
@@ -426,7 +427,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                                 children: [
                                                   Icon(Icons.work),
                                                   Padding(padding: EdgeInsets.only(left: 10)),
-                                                  Text("show Jobs")
+                                                  Text("show Jobs".tr())
                                                 ],
                                               ),
                                               onTap: () {
@@ -568,7 +569,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               child:
                               InkWell(
                                 child: Text(
-                                  "Section"
+                                  "Section".tr()
                                   ,style: TextStyle(fontSize: 20),
                                 ),
                                 onTap: () {
@@ -599,7 +600,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               child:
                               InkWell(
                                   child: Text(
-                                    "Setting"
+                                    "Setting".tr()
                                     ,style: TextStyle(fontSize: 20),
                                   ),
                                   onTap:  () { Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting(role)));}
@@ -633,7 +634,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               child:
                               InkWell(
                                   child: Text(
-                                    "Logout"
+                                    "Logout".tr()
                                     ,style: TextStyle(fontSize: 20),
                                   ),
                                   onTap:  () async{
@@ -652,7 +653,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
             ),
           ),
         appBar: AppBar(backgroundColor: Colors.black,
-title: Text("Section"),
+title: Text("Section".tr()),
             centerTitle: true,
 
             actions: [
@@ -665,7 +666,7 @@ title: Text("Section"),
             builder:(context,snapshots){
 
               if(snapshots.hasError){
-                return Text("erorr");
+                return Text("erorr".tr());
               }
               if(snapshots.hasData){
                 return
@@ -697,7 +698,7 @@ title: Text("Section"),
                               padding: EdgeInsets.only(top: 6, bottom: 2.0, left: 5.0, right: 5.0),
                               child: InkWell(
                                 child: Container(
-                                  //height: MediaQuery.of(context).size.height,
+                                 // height: MediaQuery.of(context).size.height/1,
                                   child: Column(children: [
                                     //Padding(padding: EdgeInsets.only(top: 10)),
 
@@ -739,7 +740,7 @@ title: Text("Section"),
                                           elevation: 50,
                                           backgroundColor: Colors.white,
                                           icon:   Icon(Icons.select_all),
-                                          title: Text("please select"),
+                                          title: Text("please select".tr()),
                                           actions: [
 
                                             Padding(padding: EdgeInsets.all(10),),
@@ -748,7 +749,7 @@ title: Text("Section"),
                                                 children: [
                                                   Icon(Icons.work),
                                                   Padding(padding: EdgeInsets.only(left: 10)),
-                                                  Text("show Jobs")
+                                                  Text("show Jobs".tr())
                                                 ],
                                               ),
                                               onTap: () {
@@ -774,18 +775,18 @@ title: Text("Section"),
             }
         ) ,),
           bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
+            items:  <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: 'Home',
+                label: 'Home'.tr(),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.work),
-                label: 'My application',
+                label: 'My application'.tr(),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: 'Profile',
+                label: 'Profile'.tr(),
               ),
             ],
             currentIndex: _selectedIndex,
