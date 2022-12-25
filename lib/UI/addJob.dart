@@ -12,14 +12,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/directions.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jobss/UI/Jobs.dart';
 import 'package:jobss/UI/map.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 import 'CustomColors.dart';
 
 class AddJob extends StatefulWidget {
   String sectionId;
+  String role;
+  String sectionName;
   String lat;
   String lang;
   String titlee;
@@ -28,11 +32,11 @@ class AddJob extends StatefulWidget {
   String pricee;
   String agee;
   String statuss;
-  AddJob(this.sectionId,this.lat,this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss);
+  AddJob(this.sectionId,this.lat,this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss,this.role,this.sectionName);
 
   @override
   State<StatefulWidget> createState() {
-    return AddJobState(this.sectionId,this.lat,this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss);
+    return AddJobState(this.sectionId,this.lat,this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss,this.role,this.sectionName);
   }
 }
 
@@ -45,14 +49,15 @@ class AddJobState extends State<AddJob> {
   var url;
   String lat;
   String lang;
-
+  String role;
+  String sectionName;
   String titlee;
   String descrptuonn;
   String requirementss;
   String pricee;
   String agee;
   String statuss;
-
+  String? id;
   TextEditingController title = new TextEditingController();
   TextEditingController descrptuon = new TextEditingController();
   TextEditingController price = new TextEditingController();
@@ -65,7 +70,7 @@ class AddJobState extends State<AddJob> {
   LatLng ?startLocation ;
   String location = "Search Location";
 
-  AddJobState(this.sectionId,this.lat, this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss);
+  AddJobState(this.sectionId,this.lat, this.lang,this.titlee,this.descrptuonn,this.pricee,this.requirementss,this.agee,this.statuss,this.role,this.sectionName);
   Set<Marker>?myMarker;
 
   Completer<GoogleMapController> _controller = Completer();
@@ -81,6 +86,12 @@ class AddJobState extends State<AddJob> {
       formData.save();
       DateTime now = new DateTime.now();
       DateTime date = new DateTime(now.year, now.month, now.day);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      id= await prefs.getString('id');
+      setState(() {
+
+      });
 try{
   var userspref = FirebaseFirestore.instance
       .collection("Section")
@@ -96,6 +107,7 @@ try{
     "lat": lat,
     "lang": lang,
     "created_at": date.toString(),
+    "mid":id,
     if(file!=null)
       "image": url.toString(),
 
@@ -299,7 +311,7 @@ try{
                         fillColor: Colors.white,
                         labelText: 'Title'.tr(),
                         labelStyle: TextStyle(
-                            color: Colors.black87,fontSize: 10)),
+                            color: Colors.black87,fontSize: 15)),
                   ),
                 ),
 
@@ -320,7 +332,7 @@ try{
                         fillColor: Colors.white,
                         labelText: 'Descrption'.tr(),
                         labelStyle: TextStyle(
-                            color: Colors.black87,fontSize: 10)),
+                            color: Colors.black87,fontSize: 15)),
                   ),
                 ),
                 Padding(
@@ -341,7 +353,7 @@ try{
                         fillColor: Colors.white,
                         labelText: 'salary'.tr(),
                         labelStyle: TextStyle(
-                            color: Colors.black87,fontSize: 10)),
+                            color: Colors.black87,fontSize: 15)),
                   ),
                 ),
                 Padding(
@@ -361,7 +373,7 @@ try{
                         fillColor: Colors.white,
                         labelText: 'requirement'.tr(),
                         labelStyle: TextStyle(
-                            color: Colors.black87,fontSize: 10)),
+                            color: Colors.black87,fontSize: 15)),
                   ),
                 ),
                 Padding(
@@ -382,7 +394,7 @@ try{
                         fillColor: Colors.white,
                         labelText: 'age'.tr(),
                         labelStyle: TextStyle(
-                            color: Colors.black87,fontSize: 10)),
+                            color: Colors.black87,fontSize: 15)),
                   ),
                 ),
                 Padding(
@@ -404,7 +416,7 @@ try{
                        // icon: Icon(Icons.safety_divider),
                         labelText: 'status'.tr(),
                         labelStyle: TextStyle(
-                            color: Colors.black87,fontSize: 10)),
+                            color: Colors.black87,fontSize: 15)),
                   ),
                 ),
                 InkWell(
@@ -447,7 +459,7 @@ try{
                   ),
                   onLongPress: (){
                     Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap("", "", title.text, descrptuon.text, price.text,
-                        requirements.text, age.text, status.text,lat, lang,1,sectionId,"","","","","")));
+                        requirements.text, age.text, status.text,lat, lang,1,sectionId,"","","",this.role,"",this.sectionName)));
 
                   },
                 ),
@@ -497,7 +509,8 @@ try{
 
                         });
                         addJob();
-                        Navigator.pop(context);
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>Jobs(sectionId, role, sectionName)));
+
                         setState(() {
                           isLoading = false;
                         });

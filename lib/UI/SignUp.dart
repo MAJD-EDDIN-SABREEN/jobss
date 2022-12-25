@@ -231,7 +231,7 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                           borderRadius: BorderRadius.all(Radius.circular(20))),
                                       labelText:'Name'.tr(),
 
-                                      labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                                      labelStyle: TextStyle(color: Colors.black87,fontSize: 15)
                                   ),
                                 ),
                               ) ,
@@ -260,7 +260,7 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                         borderRadius: BorderRadius.all(Radius.circular(20))),
                                       labelText:'Email'.tr(),
 
-                                      labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                                      labelStyle: TextStyle(color: Colors.black87,fontSize: 15)
                                   ),
                                 ),
                               ) ,
@@ -284,7 +284,7 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                         borderRadius: BorderRadius.all(Radius.circular(20))),
                                       labelText:'Password'.tr(),
 
-                                      labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                                      labelStyle: TextStyle(color: Colors.black87,fontSize: 15)
                                   ),
                                 ),
                               ) ,
@@ -350,7 +350,7 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             ]),
                           ),
                           onLongPress: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap("","","","","","","","",lat, lang,0,"",email.text,password.text,gender,role,name.text)));
+                            Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap("","","","","","","","",lat, lang,0,"",email.text,password.text,gender,role,name.text,"")));
                           },
                         ), elevation: 5,color: Colors.white),
                         Padding(padding: EdgeInsets.only(top:MediaQuery.of(context).size.height/20)),

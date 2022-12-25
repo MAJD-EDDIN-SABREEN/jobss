@@ -260,7 +260,7 @@ return
                       //icon: Icon(Icons.pages_outlined),
                       labelText:'Title'.tr(),
 
-                      labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
+                      labelStyle: TextStyle(color: Colors.black87,fontSize: 15)
                   ),
                 ),
               ) ,

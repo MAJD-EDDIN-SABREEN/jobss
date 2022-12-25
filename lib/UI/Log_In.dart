@@ -155,7 +155,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                     //icon: Icon(Icons.mail),
                                     labelText: 'Email'.tr(),
                                     labelStyle: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 15,
                                         //color: Colors.black87,
                                        // fontWeight: FontWeight.bold
                                     )),
@@ -187,7 +187,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
                                    // icon: Icon(Icons.password),
                                     labelText: 'Password'.tr(),
                                     labelStyle: TextStyle(
-                                        fontSize: 10,
+                                        fontSize: 15,
                                         //color: Colors.black87,
                                         //fontWeight: FontWeight.bold
                                     )),
