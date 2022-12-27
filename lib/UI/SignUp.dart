@@ -108,7 +108,7 @@ print("helllo");
               );
             },
           );
-          print('The password provided is too weak.');
+
         } else if (e.code == 'email-already-in-use') {
           return showDialog(
             context: context,
@@ -121,7 +121,7 @@ print("helllo");
             },
           );
 
-          print('The account already exists for that email.');
+
         }
         else if (e.code == 'auth/invalid-email'){
           return showDialog(
@@ -184,7 +184,7 @@ print("helllo");
              decoration:
              BoxDecoration(
                borderRadius: BorderRadius.circular(33)
-               //image:DecorationImage(image:  AssetImage("images/signUp.jpg"),fit: BoxFit.fill ),
+
 
        ),
            child:  Form(
@@ -200,7 +200,7 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   Card(elevation: 3,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
-                      //set border radius more than 50% of height and width to make circle
+
                     ),
                       borderOnForeground: true,child:    Container(
                    // height: MediaQuery.of(context).size.height,
