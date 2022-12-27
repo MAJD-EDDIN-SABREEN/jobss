@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:jobss/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jobss/UI/EditInfo.dart';
 import 'package:jobss/UI/Myapplication.dart';
@@ -22,7 +23,7 @@ class _SettingState extends State<Setting> {
   String? image;
   String? name;
   String role;
-  bool isloding = true;
+  bool isloading = true;
 
   _SettingState(this.role);
 
@@ -41,7 +42,7 @@ class _SettingState extends State<Setting> {
     await getEmail();
 
     setState(() {
-      isloding = false;
+      isloading = false;
     });
     print("hi");
   }
@@ -49,10 +50,11 @@ class _SettingState extends State<Setting> {
   changeTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var theme = await prefs.getBool('theme');
-    if (theme == false)
+    if (theme == false) {
       await prefs.setBool("theme", true);
-    else
+    } else {
       await prefs.setBool("theme", false);
+    }
     setState(() {});
   }
 
@@ -73,7 +75,7 @@ class _SettingState extends State<Setting> {
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
-      body: (isloding == false)
+      body: (isloading == false)
           ? (role == "manger")
               ? SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -297,6 +299,115 @@ class _SettingState extends State<Setting> {
                                   // ),
                                 ]),
                               ),
+                            ),  Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height / 10,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Row(children: [
+                                  Icon(
+                                    Icons.language,
+                                    color: Colors.black,
+                                    size: 30,
+                                  ),
+                                  Padding(padding: EdgeInsets.only(right: 36)),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.8,
+                                      child: InkWell(
+                                          child: Text(
+                                            "Language".tr(),
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                          onTap: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: Text(
+                                                      "Select language".tr()),
+                                                  actions: [
+                                                    Center(
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                          children: [
+                                                            Card(
+                                                              margin: EdgeInsets.all(10),
+                                                              child: InkWell(
+                                                                child: Text(
+                                                                  "Arabic"
+                                                                      .tr(),style: TextStyle(fontSize: 20),),
+                                                                onTap: () {
+                                                                  context.setLocale(
+                                                                      Locale(
+                                                                          'ar',
+                                                                          'SA'));
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Card(
+                                                              margin: EdgeInsets.all(10),
+                                                              child: InkWell(
+                                                                child: Text(
+                                                                    "english"
+                                                                        .tr(),style: TextStyle(fontSize: 20)),
+                                                                onTap: () {
+                                                                  context.setLocale(
+                                                                      Locale('en',
+                                                                          'US'));
+                                                                  setState(() {});
+                                                                },
+                                                              ),
+                                                            ),
+                                                            ElevatedButton(
+                                                                style:ButtonStyle(
+                                                                    backgroundColor: MaterialStateProperty.all(CustomColors.button),
+                                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                          BorderRadius.circular(18.0), // radius you want
+                                                                          side: BorderSide(
+                                                                            color: Colors.transparent, //color
+                                                                          ),
+                                                                        ))),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  setState(
+                                                                          () {});
+                                                                },
+                                                                child: Text(
+                                                                    "Cancel"
+                                                                        .tr()))
+                                                          ]),
+                                                    )
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          })),
+                                  // Padding(padding: EdgeInsets.only(right: 20)),
+                                  // SizedBox(
+                                  //   width: MediaQuery.of(context).size.width / 1.8,
+                                  //   child: ElevatedButton(
+                                  //       style: ElevatedButton.styleFrom(
+                                  //         backgroundColor:Colors.black ,
+                                  //       ),
+                                  //       onPressed: () async {
+                                  //         signOut();
+                                  //         SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  //         prefs.remove('email');
+                                  //         prefs.remove('id');
+                                  //         prefs.remove('theme');
+                                  //       },
+                                  //       child: Text("Logout")),
+                                  // ),
+                                ]),
+                              ),
                             ),
                           ],
                         )),
@@ -457,7 +568,7 @@ class _SettingState extends State<Setting> {
                 )
               : SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
@@ -487,7 +598,7 @@ class _SettingState extends State<Setting> {
                                                         NetworkImage(image!)),
                                               )),
                                         )
-                                      : Container(
+                                      : SizedBox(
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height /
@@ -497,7 +608,7 @@ class _SettingState extends State<Setting> {
                                                   .width /
                                               2,
                                           child: Container(
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               shape: BoxShape.circle,
                                               image: DecorationImage(
                                                   fit: BoxFit.fill,
@@ -507,7 +618,7 @@ class _SettingState extends State<Setting> {
                                           ),
                                         ),
 
-                                  Padding(padding: EdgeInsets.only(top: 10)),
+                                  const Padding( padding:  EdgeInsets.only(top: 10)),
 
                                   Center(
                                     child: Row(
@@ -515,15 +626,15 @@ class _SettingState extends State<Setting> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Center(
-                                              child: Text(
+                                              child:  Text(
                                             "${name!}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20),
                                           )),
                                           Card(
-                                              margin: EdgeInsets.all(5),
+                                              margin: const EdgeInsets.all(5),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(50),
@@ -534,8 +645,8 @@ class _SettingState extends State<Setting> {
                                                 padding:
                                                     const EdgeInsets.all(8.0),
                                                 child: Text(
-                                                  "${role!}",
-                                                  style: TextStyle(
+                                                  role!,
+                                                  style: const TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 8),
                                                 ),
@@ -545,11 +656,11 @@ class _SettingState extends State<Setting> {
                                   // Center(child: Text("        ${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
                                   // Padding(padding: EdgeInsets.only(top: 10)),
                                   // Center(child: Text("        ${role!}",style: TextStyle(color: Colors.white),)),
-                                  Padding(padding: EdgeInsets.only(top: 10)),
+                                  const Padding(padding: EdgeInsets.only(top: 10)),
                                   Center(
                                       child: Text(
-                                    "${email!}",
-                                    style: TextStyle(
+                                    email!,
+                                    style: const TextStyle(
                                         color: Colors.white, fontSize: 10),
                                   )),
                                 ],
@@ -572,24 +683,24 @@ class _SettingState extends State<Setting> {
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
                                 height: MediaQuery.of(context).size.height / 10,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
                                 child: Row(children: [
-                                  Padding(padding: EdgeInsets.only(right: 5)),
-                                  Icon(
+                                  const Padding(padding: EdgeInsets.only(right: 5)),
+                                  const Icon(
                                     Icons.padding,
                                     color: Colors.black,
                                     size: 30,
                                   ),
-                                  Padding(padding: EdgeInsets.only(right: 30)),
+                                  const Padding(padding: EdgeInsets.only(right: 30)),
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width /
                                           1.8,
                                       child: InkWell(
                                         child: Text(
                                           "My applied".tr(),
-                                          style: TextStyle(fontSize: 20),
+                                          style: const TextStyle(fontSize: 20),
                                         ),
                                         onTap: () {
                                           Navigator.push(
@@ -615,30 +726,30 @@ class _SettingState extends State<Setting> {
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
                                 height: MediaQuery.of(context).size.height / 10,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
                                 child: Row(children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.skateboarding,
                                     color: Colors.black,
                                     size: 30,
                                   ),
-                                  Padding(padding: EdgeInsets.only(right: 36)),
+                                  const Padding(padding: EdgeInsets.only(right: 36)),
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width /
                                           1.8,
                                       child: InkWell(
                                           child: Text(
                                             "Skills".tr(),
-                                            style: TextStyle(fontSize: 20),
+                                            style: const TextStyle(fontSize: 20),
                                           ),
                                           onTap: () {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        Skills()));
+                                                        const Skills()));
                                           })),
                                   // Padding(padding: EdgeInsets.only(right: 20)),
                                   // SizedBox(
@@ -742,6 +853,50 @@ class _SettingState extends State<Setting> {
                                                 );
                                               },
                                             );
+                                          })),
+                                  // Padding(padding: EdgeInsets.only(right: 20)),
+                                  // SizedBox(
+                                  //   width: MediaQuery.of(context).size.width / 1.8,
+                                  //   child: ElevatedButton(
+                                  //       style: ElevatedButton.styleFrom(
+                                  //         backgroundColor:Colors.black ,
+                                  //       ),
+                                  //       onPressed: () async {
+                                  //         signOut();
+                                  //         SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  //         prefs.remove('email');
+                                  //         prefs.remove('id');
+                                  //         prefs.remove('theme');
+                                  //       },
+                                  //       child: Text("Logout")),
+                                  // ),
+                                ]),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height / 10,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Row(children: [
+                                  const Icon(
+                                    Icons.theaters_rounded,
+                                    color: Colors.black,
+                                    size: 30,
+                                  ),
+                                  const Padding(padding: EdgeInsets.only(right: 36)),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.8,
+                                      child: InkWell(
+                                          child: Text(
+                                            "Theme".tr(),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                          onTap: () {
+                                            MyApp().notifier.value =  ThemeMode.dark;
                                           })),
                                   // Padding(padding: EdgeInsets.only(right: 20)),
                                   // SizedBox(

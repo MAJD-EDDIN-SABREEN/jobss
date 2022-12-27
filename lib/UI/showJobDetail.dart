@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -281,7 +282,7 @@ String ?uid;
 
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height/1.2,
+            height: MediaQuery.of(context).size.height,
             child: StreamBuilder<dynamic>(
               stream:userPref.where("userid",isEqualTo: uid).where("jobid",isEqualTo:id).snapshots(),
               builder:(context,snapshots){
@@ -299,14 +300,15 @@ String ?uid;
                       return
                         InkWell(
                             child: Container(
-                              height: MediaQuery.of(context).size.height/4,
+                              height: MediaQuery.of(context).size.height/12,
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
                               child: Card(
+
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                   //set border radius more than 50% of height and width to make circle
                                 ),
-                                margin: EdgeInsets.all(30),
+                              //  margin: EdgeInsets.all(30),
                                 elevation: 10,
                                 // color: Colors.blue,
                                 child:
@@ -319,25 +321,29 @@ String ?uid;
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
 
-                                         Padding(
-                                           padding: const EdgeInsets.only(top: 5),
-                                           child: Container(
+                                         Container(
 
                                               width: MediaQuery.of(context).size.width/6,
-                                              height: MediaQuery.of(context).size.height/20,
+                                             // height: MediaQuery.of(context).size.height/20,
                                               decoration: BoxDecoration(
 
                                                 shape: BoxShape.circle,
 
                                                   ) ,
                                            child: Icon(Icons.person),),
-                                         ),
+
 
                                         Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [ Text("${snapshots.data.docs[i].data()["name"]}",style: TextStyle(fontSize: 15),),
-                                          Text("${snapshots.data.docs[i].data()["email"]}",style: TextStyle(fontSize: 10,color: Colors.black45),),
-                                            Text("${snapshots.data.docs[i].data()["notes"]}",style: TextStyle(fontSize: 10,color: Colors.black45),),
+                                          children: [ AutoSizeText("${snapshots.data.docs[i].data()["name"]}",style: TextStyle(fontSize: 10),
+                                          minFontSize: 3,
+                                          maxFontSize: 10,overflow: TextOverflow.fade,),
+                                                   AutoSizeText("${snapshots.data.docs[i].data()["email"]}",style: TextStyle(fontSize:6,color: Colors.black45),
+                                              minFontSize: 3,
+                                              maxFontSize: 10,
+                                                   overflow: TextOverflow.fade,),
+                                            AutoSizeText("${snapshots.data.docs[i].data()["notes"]}",style: TextStyle(fontSize: 6,color: Colors.black45), minFontSize: 3,
+                                              maxFontSize: 10,overflow: TextOverflow.fade,),
 
                                           ],),
                                       ],)

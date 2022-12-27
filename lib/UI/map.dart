@@ -23,13 +23,15 @@ class MyMap extends StatefulWidget {
   String gender;
   String role;
   String name;
+  String sectionName;
+
 
   MyMap(this.id, this.image, this.title, this.descrption, this.price,
-      this.requirements, this.age, this.status,this.lat, this.lang,this.from,this.sectionid,this.email,this.password,this.gender,this.role,this.name);
+      this.requirements, this.age, this.status,this.lat, this.lang,this.from,this.sectionid,this.email,this.password,this.gender,this.role,this.name,this.sectionName);
 
   @override
   State<MyMap> createState() => _MyMap(this.id, this.image, this.title, this.descrption, this.price,
-      this.requirements, this.age, this.status,this.lat, this.lang,this.from,this.sectionid,this.email,this.password,this.gender,this.role,this.name);
+      this.requirements, this.age, this.status,this.lat, this.lang,this.from,this.sectionid,this.email,this.password,this.gender,this.role,this.name,this.sectionName);
 }
 
 class _MyMap extends State<MyMap> {
@@ -51,10 +53,12 @@ class _MyMap extends State<MyMap> {
   String role;
   String name;
 
+  String sectionName;
+
   Set<Marker>?myMarker;
   GoogleMapController? mapController;
   _MyMap(this.id, this.image, this.title, this.descrption, this.price,
-      this.requirements, this.age, this.status,this.lat, this.lang,this.from,this.sectionid,this.email,this.password,this.gender,this.role,this.name);
+      this.requirements, this.age, this.status,this.lat, this.lang,this.from,this.sectionid,this.email,this.password,this.gender,this.role,this.name,this.sectionName);
 @override
   void initState() {
   myMarker={
@@ -125,10 +129,10 @@ class _MyMap extends State<MyMap> {
                       if(from==0)
                       Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>SignUp(lat,lang,this.email,this.password,this.gender,this.role,name)),(Route<dynamic> route) => false);
                     else if(from==1)
-                         Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>AddJob(sectionid, lat, lang,title,descrption,price,requirements,age,status)),(Route<dynamic> route) => false);
+                         Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>AddJob(sectionid, lat, lang,title,descrption,price,requirements,age,status,this.role,this.sectionName)),(Route<dynamic> route) => false);
                        else
                         Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>JobDetail(this.id, this.image, this.title, this.descrption, this.price,
-                            this.requirements, this.age, this.status,sectionid, lat, lang)),(Route<dynamic> route) => false);
+                            this.requirements, this.age, this.status,sectionid, lat, lang,role,sectionName)),(Route<dynamic> route) => false);
 
 
                     }, child: Text('OK'.tr())),

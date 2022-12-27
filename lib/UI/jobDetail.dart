@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
+import 'Jobs.dart';
 import 'map.dart';
 
 class JobDetail extends StatefulWidget {
@@ -23,8 +24,10 @@ class JobDetail extends StatefulWidget {
   String sectionId;
   String lat;
   String lang;
+  String role;
+  String sectioname;
   JobDetail(this.id, this.image, this.title, this.descrption, this.price,
-      this.requirements, this.age, this.status,this.sectionId,this.lat,this.lang);
+      this.requirements, this.age, this.status,this.sectionId,this.lat,this.lang,this.role,this.sectioname);
 
   @override
   State<StatefulWidget> createState() {
@@ -36,7 +39,7 @@ class JobDetail extends StatefulWidget {
         this.price,
         this.requirements,
         this.age,
-        this.status,this.sectionId,this.lat,this.lang);
+        this.status,this.sectionId,this.lat,this.lang,this.role,this.sectioname);
   }
 
 }
@@ -53,8 +56,11 @@ class JobDetailState extends State<JobDetail> {
   String sectionId;
   String lat;
   String lang;
+  String role;
+  String sectioname;
+
   JobDetailState(this.id, this.image, this.title, this.descrption, this.price,
-      this.requirements, this.age, this.status,this.sectionId,this.lat,this.lang);
+      this.requirements, this.age, this.status,this.sectionId,this.lat,this.lang,this.role,this.sectioname);
 
   Set<Marker>?myMarker;
   GlobalKey<FormState>formStateUpdateJob=new GlobalKey<FormState>();
@@ -105,8 +111,9 @@ class JobDetailState extends State<JobDetail> {
         print("no");
       }
     });
-      Navigator.pop(context);
-  }}
+      Navigator.push(context,MaterialPageRoute(builder: (context)=>Jobs(sectionId, role, sectioname)));
+
+    }}
 
   uplodImages() async {
     var imagePicked = await imagepicker.getImage(source: ImageSource.camera);
@@ -315,7 +322,7 @@ class JobDetailState extends State<JobDetail> {
                           labelText: 'Title'.tr(),
 
                           labelStyle: TextStyle(
-                              color: Colors.black87,fontSize: 10)
+                              color: Colors.black87,fontSize: 15)
                       ),
                     ),
                   ),
@@ -337,7 +344,7 @@ class JobDetailState extends State<JobDetail> {
                           labelText: 'Description'.tr(),
 
                           labelStyle: TextStyle(
-                              color: Colors.black87,fontSize: 10)
+                              color: Colors.black87,fontSize: 15)
                       ),
                     ),
                   ),
@@ -359,7 +366,7 @@ class JobDetailState extends State<JobDetail> {
                           labelText: 'Salary'.tr(),
 
                           labelStyle: TextStyle(
-                              color: Colors.black87,fontSize: 10)
+                              color: Colors.black87,fontSize: 15)
                       ),
                     ),
                   ),
@@ -380,7 +387,7 @@ class JobDetailState extends State<JobDetail> {
                           fillColor: Colors.white,
                           labelText: 'requirement'.tr(),
                           labelStyle: TextStyle(
-                              color: Colors.black87,fontSize: 10)),
+                              color: Colors.black87,fontSize: 15)),
                     ),
                   ),
                   Padding(
@@ -401,7 +408,7 @@ class JobDetailState extends State<JobDetail> {
                           fillColor: Colors.white,
                           labelText: 'age'.tr(),
                           labelStyle: TextStyle(
-                              color: Colors.black87,fontSize: 10)),
+                              color: Colors.black87,fontSize: 15)),
                     ),
                   ),
                   Padding(padding:EdgeInsets.only(top: 20)),
@@ -446,7 +453,7 @@ class JobDetailState extends State<JobDetail> {
                     ) ,),
                     onLongPress: (){
                       Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap(this.id, this.image, this.title, this.descrption, this.price,
-                          this.requirements, this.age, this.status,lat, lang,2,sectionId,"","","","","")));
+                          this.requirements, this.age, this.status,lat, lang,2,sectionId,"","","",role,"",sectioname)));
 
                     },
                   ),

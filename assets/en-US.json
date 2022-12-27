@@ -84,6 +84,7 @@
   "salary": "salary",
   "female": "female",
   "invalid-email": "invalid-email",
-  "Role": "Role"
+  "Role": "Role",
+  "Theme": "Theme"
 
 }

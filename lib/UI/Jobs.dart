@@ -3,12 +3,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobss/UI/Sections.dart';
 import 'package:jobss/UI/showJobDetail.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:jobss/UI/addJob.dart';
 import 'package:jobss/UI/application.dart';
 import 'package:jobss/UI/jobDetail.dart';
 import 'package:jobss/UI/showApplcaton.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'CustomColors.dart';
 
@@ -28,6 +30,8 @@ class JobsState extends State<Jobs>{
   String sectionId;
   String role;
   String sectionName;
+  String ?id;
+  bool isLoding =true;
   TextEditingController _searchController = TextEditingController();
   List documents = [];
   String searchText = '';
@@ -64,11 +68,18 @@ return appnum;
       }
     });
   }
-  getAppnum(){
+  getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id= await prefs.getString('id');
+    print(id);
+    setState(() {
+isLoding=false;
+    });
 
   }
   @override
   void initState() {
+    getUserId();
     documents=[];
     super.initState();
     print(sectionName);
@@ -78,7 +89,9 @@ return appnum;
     CollectionReference jobRef =FirebaseFirestore.instance.collection("Section").doc(sectionId).collection("Jobs");
    return
      (role=="manger")?
-     Scaffold(
+     (isLoding==true)?
+         Center(child: CircularProgressIndicator(),)
+     :Scaffold(
      appBar: AppBar(
        backgroundColor: Colors.white,
 
@@ -86,13 +99,16 @@ return appnum;
       //backgroundColor: CustomColors.appBar,
        centerTitle: true,
        elevation: 10,
+
        actions: [
-         Icon(Icons.search,color: Colors.black,),
+         Container(
+             width: MediaQuery.of(context).size.width/10,
+             child: Icon(Icons.search,color: Colors.black,)),
          Container(
           // color: Colors.white,
-           padding: EdgeInsets.all(1),
+           //padding: EdgeInsets.all(),
          height: MediaQuery.of(context).size.height,
-         width: MediaQuery.of(context).size.width/1.2 ,
+         width: MediaQuery.of(context).size.width/1.3 ,
          child:
          SearchField(
 onSuggestionTap: (e){
@@ -121,7 +137,16 @@ documents=[];
 
 
          ),
-       )
+
+       ),
+         Container(
+           width: MediaQuery.of(context).size.width/10,
+           child: IconButton(icon: Icon(Icons.home,color: Colors.black,),
+           onPressed: (){
+           Navigator.push(context, MaterialPageRoute(builder: (context) => Section(role)));
+
+           },),
+         )
        ],
      ),
      body:
@@ -130,7 +155,7 @@ documents=[];
 
      (search==true)?
            StreamBuilder<dynamic>(
-               stream:jobRef.where("title",isEqualTo: title).snapshots(),
+               stream:jobRef.where("title",isEqualTo: title).where("mid",isEqualTo: id).snapshots(),
                builder:(context,snapshots){
                  print(search);
                  if(snapshots.hasError){
@@ -286,7 +311,7 @@ documents=[];
                                                  ],
                                                )
                                                , onTap: () {
-                                               Navigator.push(context,MaterialPageRoute(builder: (context)=>JobDetail(snapshots.data.docs[i].id, "${snapshots.data.docs[i].data()["image"]}", "${snapshots.data.docs[i].data()["title"]}", "${snapshots.data.docs[i].data()["description"]}", "${snapshots.data.docs[i].data()["salary"]}","${snapshots.data.docs[i].data()["requirement"]}","${snapshots.data.docs[i].data()["age"]}","${snapshots.data.docs[i].data()["status"]}",sectionId,"${snapshots.data.docs[i].data()["lat"]}","${snapshots.data.docs[i].data()["lang"]}")));
+                                               Navigator.push(context,MaterialPageRoute(builder: (context)=>JobDetail(snapshots.data.docs[i].id, "${snapshots.data.docs[i].data()["image"]}", "${snapshots.data.docs[i].data()["title"]}", "${snapshots.data.docs[i].data()["description"]}", "${snapshots.data.docs[i].data()["salary"]}","${snapshots.data.docs[i].data()["requirement"]}","${snapshots.data.docs[i].data()["age"]}","${snapshots.data.docs[i].data()["status"]}",sectionId,"${snapshots.data.docs[i].data()["lat"]}","${snapshots.data.docs[i].data()["lang"]}",role,sectionName)));
                                              },
                                              ),
                                              Padding(padding: EdgeInsets.all(10),),
@@ -325,7 +350,7 @@ documents=[];
 
          :
      StreamBuilder<dynamic>(
-         stream:jobRef.snapshots(),
+         stream:jobRef.where("mid",isEqualTo: id).snapshots(),
          builder:(context,snapshots){
 
            if(snapshots.hasError){
@@ -481,7 +506,7 @@ Spacer(),
                                      ],
                                    )
                                    , onTap: () {
-                                   Navigator.push(context,MaterialPageRoute(builder: (context)=>JobDetail(snapshots.data.docs[i].id, "${snapshots.data.docs[i].data()["image"]}", "${snapshots.data.docs[i].data()["title"]}", "${snapshots.data.docs[i].data()["description"]}", "${snapshots.data.docs[i].data()["salary"]}","${snapshots.data.docs[i].data()["requirement"]}","${snapshots.data.docs[i].data()["age"]}","${snapshots.data.docs[i].data()["status"]}",sectionId,"${snapshots.data.docs[i].data()["lat"]}","${snapshots.data.docs[i].data()["lang"]}")));
+                                   Navigator.push(context,MaterialPageRoute(builder: (context)=>JobDetail(snapshots.data.docs[i].id, "${snapshots.data.docs[i].data()["image"]}", "${snapshots.data.docs[i].data()["title"]}", "${snapshots.data.docs[i].data()["description"]}", "${snapshots.data.docs[i].data()["salary"]}","${snapshots.data.docs[i].data()["requirement"]}","${snapshots.data.docs[i].data()["age"]}","${snapshots.data.docs[i].data()["status"]}",sectionId,"${snapshots.data.docs[i].data()["lat"]}","${snapshots.data.docs[i].data()["lang"]}",role,sectionName)));
                                  },
                                  ),
                                  Padding(padding: EdgeInsets.all(10),),
@@ -521,7 +546,7 @@ Spacer(),
      floatingActionButton: FloatingActionButton(
          backgroundColor: Colors.black,
          onPressed: (){
-       Navigator.push(context,MaterialPageRoute(builder: (context)=>AddJob(sectionId,"30.044420"," 31.235712","","","","","","")));
+       Navigator.push(context,MaterialPageRoute(builder: (context)=>AddJob(sectionId,"30.044420"," 31.235712","","","","","","",role,sectionName)));
      },child: Icon(Icons.add)),
    ):
      Scaffold(

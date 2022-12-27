@@ -99,17 +99,17 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                   return ListTile(
                     //trailing: Icon(Icons.monetization_on),
                     leading: Icon(Icons.padding),
-                    title: Text(username),
-                    subtitle: Text(email),
+                    title: Text("${snapshots.data.docs[i].data()["name"]}"),
+                    subtitle: Text("${snapshots.data.docs[i].data()["email"]}"),
                     onTap: () async {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text(username),
+                              title: Text("${snapshots.data.docs[i].data()["name"]}"),
                               actions: [
                                 Center(
-                                  child: Card(child: Text(email)),
+                                  child: Card(child: Text("${snapshots.data.docs[i].data()["email"]}")),
                                 ),
                                 Card(
                                   //elevation: 3,

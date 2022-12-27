@@ -23,16 +23,26 @@ Future<void> main() async {
     ));
 }
 class MyApp extends StatelessWidget {
+  final ValueNotifier<ThemeMode> notifier = ValueNotifier(ThemeMode.light);
+  ThemeMode themeMode = ThemeMode.system;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  ValueListenableBuilder<ThemeMode>(
+        valueListenable: notifier,
+        builder: (_, mode, __) {
+          return MaterialApp(
+
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData.light(),
-        routes: <String, WidgetBuilder>{
+
+              theme: ThemeData.light(),
+              darkTheme: ThemeData.dark(),
+
+              themeMode: notifier.value,
+              routes: <String, WidgetBuilder>{
 
           '/section': (BuildContext context) => Section(""),
 
@@ -41,8 +51,8 @@ class MyApp extends StatelessWidget {
         SplashScreen()
 
     );
-  }
-}
+  });
+}}
 
 
 

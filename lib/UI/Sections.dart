@@ -62,7 +62,7 @@ signOut() async {
   String? email;
   String? image;
   String? name;
-
+  String ?id;
   changeTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var theme = await prefs.getBool('theme');
@@ -79,6 +79,7 @@ signOut() async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       email = await prefs.getString('email');
+      id=await prefs.getString('id');
       var userPref = FirebaseFirestore.instance.collection("Users");
       var query = await userPref.where("email", isEqualTo: email).get();
       name = query.docs[0]["name"];
@@ -325,7 +326,7 @@ Padding(padding: EdgeInsets.only(top: 10)),
           // }, icon:Icon(Icons.settings)),
         ]),
         backgroundColor: Colors.black,
-      body: Container(color: Colors.black,child:StreamBuilder<dynamic>(stream: sectionRef.snapshots(),
+      body: Container(color: Colors.black,child:StreamBuilder<dynamic>(stream: sectionRef.where("mid",isEqualTo: id).snapshots(),
             builder:(context,snapshots){
 
               if(snapshots.hasError){

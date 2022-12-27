@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddSection extends StatefulWidget{
   @override
@@ -21,18 +22,27 @@ class AddSectionState extends State<AddSection>{
   var imagepicker = ImagePicker();
   var nameImage;
   var url;
+  String ?id;
   GlobalKey<FormState>formStateAddSection=new GlobalKey<FormState>();
   TextEditingController title=new TextEditingController();
   addSection(BuildContext context) async {
     var formData=formStateAddSection.currentState;
     if(formData!.validate()) {
       formData.save();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      id=await prefs.getString('id');
+      setState(() {
+
+      });
+
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
 
     var userspref = FirebaseFirestore.instance.collection("Section");
     userspref.add({
       "name": title.text,
+      "mid":id,
       if(file!=null)
       "image":url.toString()
     });
@@ -218,7 +228,7 @@ color: Colors.grey
                        // icon: Icon(Icons.pages_outlined),
                         labelText:'Title'.tr(),
 
-                        labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                        labelStyle: TextStyle(color: Colors.black87,fontSize: 15)
                     ),
                   )) ,
                   Spacer(),
