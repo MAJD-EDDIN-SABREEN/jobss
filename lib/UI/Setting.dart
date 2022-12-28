@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jobss/main.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jobss/UI/EditInfo.dart';
 import 'package:jobss/UI/Myapplication.dart';
 
 import 'CustomColors.dart';
 import 'Skills.dart';
+import 'model_theme.dart';
 
 class Setting extends StatefulWidget {
   String role;
@@ -69,11 +71,24 @@ class _SettingState extends State<Setting> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return Consumer<ModelTheme>(
+        builder: (context, ModelTheme themeNotifier, child) {
+          return Scaffold(
       appBar: AppBar(
         title: Text("Setting".tr()),
         centerTitle: true,
         backgroundColor: Colors.black,
+        actions: [
+          IconButton(
+              icon: Icon(themeNotifier.isDark
+                  ? Icons.nightlight_round
+                  : Icons.wb_sunny),
+              onPressed: () {
+                themeNotifier.isDark
+                    ? themeNotifier.isDark = false
+                    : themeNotifier.isDark = true;
+              })
+        ],
       ),
       body: (isloading == false)
           ? (role == "manger")
@@ -566,7 +581,8 @@ class _SettingState extends State<Setting> {
                   //   ),
                   // )
                 )
-              : SingleChildScrollView(
+              :
+                          SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -873,50 +889,7 @@ class _SettingState extends State<Setting> {
                                 ]),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: MediaQuery.of(context).size.height / 10,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Row(children: [
-                                  const Icon(
-                                    Icons.theaters_rounded,
-                                    color: Colors.black,
-                                    size: 30,
-                                  ),
-                                  const Padding(padding: EdgeInsets.only(right: 36)),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.8,
-                                      child: InkWell(
-                                          child: Text(
-                                            "Theme".tr(),
-                                            style: const TextStyle(fontSize: 20),
-                                          ),
-                                          onTap: () {
-                                            MyApp().notifier.value =  ThemeMode.dark;
-                                          })),
-                                  // Padding(padding: EdgeInsets.only(right: 20)),
-                                  // SizedBox(
-                                  //   width: MediaQuery.of(context).size.width / 1.8,
-                                  //   child: ElevatedButton(
-                                  //       style: ElevatedButton.styleFrom(
-                                  //         backgroundColor:Colors.black ,
-                                  //       ),
-                                  //       onPressed: () async {
-                                  //         signOut();
-                                  //         SharedPreferences prefs = await SharedPreferences.getInstance();
-                                  //         prefs.remove('email');
-                                  //         prefs.remove('id');
-                                  //         prefs.remove('theme');
-                                  //       },
-                                  //       child: Text("Logout")),
-                                  // ),
-                                ]),
-                              ),
-                            ),
+
                           ],
                         )),
                   ),
@@ -1075,6 +1048,6 @@ class _SettingState extends State<Setting> {
                   // )
                 )
           : Center(child: CircularProgressIndicator()),
-    );
+    );});
   }
 }

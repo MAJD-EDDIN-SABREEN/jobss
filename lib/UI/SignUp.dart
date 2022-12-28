@@ -198,6 +198,7 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child:
 
                   Card(elevation: 3,
+                    shadowColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
 
@@ -294,24 +295,25 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           ]),
 
 
-                        Padding(padding: EdgeInsets.only(top: 10)),
-                        Text("Gender".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
-                        Padding(padding: EdgeInsets.only(top: 10)),
+                        const Padding(padding: EdgeInsets.only(top: 10)),
+                        Text("Gender".tr(),style: const TextStyle(fontWeight: FontWeight.bold)),
+                        const Padding(padding: EdgeInsets.only(top: 10)),
                         CupertinoRadioChoice(
                             choices: {'male' : 'Male', 'female' : 'Female', 'other': 'Other'},
                             onChange: (selectedGender) {gender=selectedGender;
                               },
                             selectedColor: Colors.black,
+
                            initialKeyValue: gender),
-                        Padding(padding: EdgeInsets.only(top: 10)),
-                        Text("Role".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
-                        Padding(padding: EdgeInsets.only(top: 10)),
+                        const Padding(padding: EdgeInsets.only(top: 10)),
+                        Text("Role".tr(),style: const TextStyle(fontWeight: FontWeight.bold)),
+                        const Padding(padding: EdgeInsets.only(top: 10)),
                         CupertinoRadioChoice(
                             selectedColor: Colors.black,
                             choices: {'manger' : 'manger', 'employee' : 'Employee' },
                             onChange: (selected) {role = selected;},
                             initialKeyValue: role),
-                        Card(child:
+
                         InkWell(
                           child: Container(
                             padding: EdgeInsets.all(20),
@@ -352,7 +354,7 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           onLongPress: (){
                             Navigator.push(context,MaterialPageRoute(builder: (context)=>MyMap("","","","","","","","",lat, lang,0,"",email.text,password.text,gender,role,name.text,"")));
                           },
-                        ), elevation: 5,color: Colors.white),
+                        ),
                         Padding(padding: EdgeInsets.only(top:MediaQuery.of(context).size.height/20)),
                         (isLoading==false) ?
                         SizedBox(

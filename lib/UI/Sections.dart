@@ -670,6 +670,7 @@ title: Text("Section".tr()),
                 return Text("erorr".tr());
               }
               if(snapshots.hasData){
+                print( "${snapshots.data}");
                 return
                   Container(
                       padding: EdgeInsets.only(top: 5),
@@ -677,6 +678,7 @@ title: Text("Section".tr()),
                       width: MediaQuery.of(context).size.width,
                       //height: MediaQuery.of(context).size.height,
                       child: GridView.builder(
+
                         //childAspectRatio: (1 / .4),
                         //shrinkWrap: true,
                         // scrollDirection: Axis.vertical,
@@ -684,11 +686,14 @@ title: Text("Section".tr()),
                         SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
 
+
                           //mainAxisSpacing: 50
                           childAspectRatio: 1 /MediaQuery.of(context).size.height/4,
                         ),
                         itemCount: snapshots.data.docs!.length,
+
                         itemBuilder: (BuildContext context, int postion) {
+                          print(  "${snapshots.data.docs[postion].data()["name"]}" );
                           return  Container(
                             // height: MediaQuery.of(context).size.height/2,
                               decoration: BoxDecoration(
