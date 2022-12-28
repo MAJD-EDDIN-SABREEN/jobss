@@ -33,13 +33,13 @@ String ?title;
       var userPref = FirebaseFirestore.instance.collection("Section").doc(sectionId).collection("Jobs");
       var query = await userPref.doc(jobId).get();
       Map<String, dynamic> data=query.data()as Map<String, dynamic>;
-
+      setState(() {
       title =data["title"];
       des =data["description"];
       print(title);
       //image = query.docs[0]["image"];
        //jobdata=await query.data();
-      setState(() {
+
 
       });
      // print(jobdata);
@@ -77,126 +77,131 @@ print (id);
               if (snapshots.hasData){
                 return ListView.builder(
                   itemCount: snapshots.data.docs!.length,
+                  scrollDirection: Axis.vertical,
                   itemBuilder: (context,i)
                   {
 
                     return
                       InkWell(
                         child: Container(
-                          height: MediaQuery.of(context).size.height/2.5,
+                          height: MediaQuery.of(context).size.height/2.3,
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                             //set border radius more than 50% of height and width to make circle
                           ),
-                          margin: EdgeInsets.all(30),
+                          margin: EdgeInsets.all(20),
                           elevation: 10,
                           // color: Colors.blue,
 child:
-Column(crossAxisAlignment: CrossAxisAlignment.center,
-    children:  [
-      Padding(
-        padding: EdgeInsets.only(top: 10,right: 10,left: 10),
-        child:
+Padding(
+  padding: const EdgeInsets.all(8.0),
+  child:   Column(crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children:  [
+        Padding(
+          padding: EdgeInsets.all(MediaQuery.of(context).size.height/800),
+          child:
 
-        Row(
+          Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+
+                Text("job  :".tr(),style: TextStyle(fontWeight: FontWeight.bold),),
+                Text(
+                    "${snapshots.data.docs[i].data()["jobName"]}")
+              ]),
+
+        ),
+    Padding(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.height/800),
+      child:
+
+      Row(
             mainAxisAlignment:
             MainAxisAlignment.spaceBetween,
             children: [
 
-              Text("job  :".tr(),style: TextStyle(fontWeight: FontWeight.bold),),
+              Text("Expected salary :".tr(),style: TextStyle(fontWeight: FontWeight.bold),),
               Text(
-                  "${snapshots.data.docs[i].data()["jobName"]}")
+                  "${snapshots.data.docs[i].data()["expected salary"]}")
             ]),
 
-      ),
-  Padding(
-    padding: EdgeInsets.only(top: 10,right: 10,left: 10),
-    child:
-
-    Row(
-          mainAxisAlignment:
-          MainAxisAlignment.spaceBetween,
-          children: [
-
-            Text("Expected salary :".tr(),style: TextStyle(fontWeight: FontWeight.bold),),
-            Text(
-                "${snapshots.data.docs[i].data()["expected salary"]}")
-          ]),
-
-  ),
-  Padding(
-    padding: EdgeInsets.all(5),
-    child:  Row(
-          mainAxisAlignment:
-          MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Notes :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(
-                "${snapshots.data.docs[i].data()["notes"]}")
-          ]),
-
-  ),
-  Padding(
-    padding: EdgeInsets.all(5),
-    child:  Row(
-          mainAxisAlignment:
-          MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Start At :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(
-                "${snapshots.data.docs[i].data()["Start_at"]}")
-          ]),
-
-  ),
-  Padding(
-    padding: EdgeInsets.all(5),
-    child:  Row(
-          mainAxisAlignment:
-          MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Created At :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(
-                "${snapshots.data.docs[i].data()["created_at"]}")
-          ]),
     ),
-
-  Padding(
-    padding: EdgeInsets.all(5),
-    child:  Row(
+    Padding(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.height/800),
+      child:  Row(
             mainAxisAlignment:
             MainAxisAlignment.spaceBetween,
             children: [
-              Text("Status :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
-              if ((snapshots.data.docs[i]
-                  .data()["status"])
-                  .toString() ==
-                  "0")
-                Text("Wating")
-              else if ((snapshots.data.docs[i]
-                  .data()["status"])
-                  .toString() ==
-                  "1")
-                Text("Acceptable".tr())
-              else if ((snapshots.data.docs[i]
+              Text("Notes :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                  "${snapshots.data.docs[i].data()["notes"]}")
+            ]),
+
+    ),
+    Padding(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.height/800),
+      child:  Row(
+            mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Start At :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                  "${snapshots.data.docs[i].data()["Start_at"]}")
+            ]),
+
+    ),
+    Padding(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.height/800),
+      child:  Row(
+            mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Created At :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                  "${snapshots.data.docs[i].data()["created_at"]}")
+            ]),
+      ),
+
+    Padding(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.height/800),
+      child:  Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Status :".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
+                if ((snapshots.data.docs[i]
                     .data()["status"])
                     .toString() ==
-                    "2")
-                  Text("UnAcceptable".tr()),
-            ]),
-  ),
+                    "0")
+                  Text("Wating")
+                else if ((snapshots.data.docs[i]
+                    .data()["status"])
+                    .toString() ==
+                    "1")
+                  Text("Acceptable".tr())
+                else if ((snapshots.data.docs[i]
+                      .data()["status"])
+                      .toString() ==
+                      "2")
+                    Text("UnAcceptable".tr()),
+              ]),
+    ),
 
 
 
 
 
 
-]),
+  ]),
+),
                         ),
                     ),
-                        onTap: (){
-                          getJobData("${snapshots.data.docs[i].data()["sectionid"]}", "${snapshots.data.docs[i].data()["jobid"]}");
+                        onTap: () async {
+                          await getJobData("${snapshots.data.docs[i].data()["sectionid"]}", "${snapshots.data.docs[i].data()["jobid"]}");
 
                           showDialog(context: context, builder: (
                   BuildContext context) {
